@@ -20,4 +20,9 @@ This roject is not prefect yet, but it's a great idea,I'm glad to hear your voic
 项目可能目前还不是很完美，但是想法真的很不错，如果你有些想法，联系我。
 
 ---
+## *C-hange Log
 
+`14/10/22`:
+
+1. move project to the github after basic functions were completed.
+1. Update the first stable release and dev release.
