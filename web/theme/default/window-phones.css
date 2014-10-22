@@ -1,0 +1,155 @@
+.window-phones-title {
+border-bottom: 1px solid #ddd;
+}
+.window-phones-list,.window-phones-group {
+height: 452px;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-phones-group {
+width: 100px;
+}
+.window-phones-list img {
+width: 25px;
+height: 25px;
+border-radius: 4px;
+margin-right: 10px;
+margin-top: 3px;
+}
+.window-phones-list div {
+display: inline-block;
+vertical-align: top;
+font-size: 13px;
+}
+.window-phones-list ul li div span.name {
+font-weight: bold;
+}
+.window-phones-list ul li div span {
+display: inline-block;
+overflow: hidden;
+height: 30px;
+}
+.window-phones ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-phones span.call-status {
+display: inline-block;
+width: 25px;
+height: 25px;
+margin-right: 12px;
+background: url(images/main.png) no-repeat;
+}
+.window-phones span.OUTGOING {
+	background-position:-629px -214px
+}
+.window-phones span.OUTGOING.fail {
+background-position: -629px -240px;
+}
+.window-phones span.INCOMING {
+	background-position:-629px -275px
+}
+.window-phones span.MISSED {
+	background-position:-629px -305px
+}
+span.call-status.NEW {
+background-position: -629px -332px;
+}
+.window-phones-list ul li {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    vertical-align: middle;
+    padding-left: 10px;
+    cursor:pointer;
+}
+.window-phones-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-phones-list ul li.select {
+background: #6EA3F1;
+}
+.window-phones-list ul li:hover {
+background: #F0F0F0;
+}
+.window-phones-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-phones-list {
+    height: 452px;
+    overflow: auto;
+    width: 685px;
+}
+.window-phones-group ul li {
+    height: 30px;
+    background: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    text-align: center;cursor: pointer;overflow: hidden;
+}
+.window-phones-group ul li.select {
+    border-left: 4px solid #4FBAD4;
+    font-weight: bold;
+}
+.window-phones-group ul li:hover {
+    font-weight: bold;
+}
+.i-float-left.window-contact-page-img {
+    float: left;
+    margin: 10px 20px;
+}
+.i-float-left {
+    float: left;
+}
+.window-phones span.installT {
+    width: 140px;
+    text-align: center;
+}
+.window-phones span.size {
+    width: 70px;
+    text-align: center;
+}
+.window-phones span.version {
+    width: 140px;
+    text-align: center;
+}
+.window-phones span.name {
+    width: 140px;
+}
+.window-phones-list ul li.title {
+    height: 20px;
+    display: block;
+    line-height: 20px;
+    background: #BAEDF6;
+}
+.window-phones-list ul li.title span {
+    height: 21px;
+    text-align: center;
+    border-right: 1px solid #40A5BE;font-size: 12px;
+}
+.window-phones-list ul li.title span.name{
+font-weight:normal;
+}
+.window-phones-list ul li.title span.head-title {
+    width: 30px;
+    display: inline-block;
+}
+.window-phones-list-scroll{
+height: 430px;
+overflow: auto;
+}

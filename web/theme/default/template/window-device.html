@@ -1,0 +1,97 @@
+<div class="window-summaryDetail">
+    <div class="window-summaryDetail-phoneImg">
+        <img src="{deviceIMG}" />
+    </div>
+    <div class="window-summaryDetail-title">
+        <span class="over-ellipsis window-summaryDetail-titleModel">{titleModel}</span>
+        <span class="window-summaryDetail-titleOS">{titleOS}</span>
+    </div>
+    <div class="window-summaryDetail-list">
+        <div class="window-summaryDetail-item window-summaryDetail-contact">
+            <div class="img"> </div>
+            <div class="text">{text_contact}</div>
+            <div class="extra">{num_contact}</div>
+        </div>
+        <div class="window-summaryDetail-item window-summaryDetail-sms">
+            <div class="img"> </div>
+            <div class="text">{text_sms}</div>
+            <div class="extra">{num_sms}</div>
+        </div>
+        <div class="window-summaryDetail-item window-summaryDetail-app">
+            <div class="img"> </div>
+            <div class="text">{text_app}</div>
+            <div class="extra">{num_app}</div>
+        </div>
+        <div class="window-summaryDetail-item window-summaryDetail-music">
+            <div class="img"> </div>
+            <div class="text">{text_music}</div>
+            <div class="extra">{num_music}</div>
+        </div>
+        <div class="window-summaryDetail-item window-summaryDetail-video">
+            <div class="img"> </div>
+            <div class="text">{text_video}</div>
+            <div class="extra">{num_video}</div>
+        </div>
+        <div class="window-summaryDetail-item window-summaryDetail-photo">
+            <div class="img"> </div>
+            <div class="text">{text_photo}</div>
+            <div class="extra">{num_photo}</div>
+        </div>
+    </div>
+    <div class="window-summaryDetail-storage">
+        <div>
+            <span class="stitle">{text_rom_ava}</span>
+            <span class="mask_text i-float-right">{text_tot}:{size_rom_tot}&nbsp;{text_taken}:{size_rom_taken}&nbsp;{text_ava}:{size_rom_ava}</span>
+        </div>
+        <div class="bar">
+            <div class="using" title="{size_rom_taken}/{size_rom_tot}" style="width: {rom_percent}%;"> </div>
+        </div>
+    </div>
+    <div class="window-summaryDetail-sdStorage">
+        <div>
+            <span class="stitle">{text_sd_ava}</span>
+            <span class="mask_text i-float-right">{text_tot}:{size_sd_tot}&nbsp;{text_taken}:{size_sd_taken}&nbsp;{text_ava}:{size_sd_ava}</span>
+        </div>
+        <div class="bar">
+            <div title="{text_music}:{size_music}" class="smusic i-float-left" style="width: {sd_music_percent}%;"></div>
+            <div title="{text_video}:{size_video}" class="svideo i-float-left" style="width: {sd_video_percent}%;"></div>
+            <div title="{text_photo}:{size_photo}" class="sphoto i-float-left" style="width: {sd_photo_percent}%;"></div>
+            <div title="{text_other}:{size_other}" class="sother i-float-left" style="width: {sd_other_percent}%;"></div>
+        </div>
+        <div class="stip">
+            <div class="i-float-left">
+                <div class="smusic stip i-float-left"></div>
+                <div class="i-float-left ml6 mr16">{text_music}{size_music}</div>
+            </div>
+            <div class="i-float-left">
+                <div class="svideo stip i-float-left"></div>
+                <div class="i-float-left ml6 mr16">{text_video}{size_video}</div>
+            </div>
+            <div class="i-float-left">
+                <div class="sphoto stip i-float-left"></div>
+                <div class="i-float-left ml6 mr16">{text_photo}{size_photo}</div>
+            </div>
+            <div class="i-float-left">
+                <div class="sother stip i-float-left"></div>
+                <div class="i-float-left ml6 mr16">{text_other}{size_other}</div>
+            </div>
+        </div>
+    </div>
+    <div class="window-summaryDetail-other">
+        <div>
+            <p>{text_other}</p>
+            <table cellspacing="0" rules="rows">
+                <tr><th>{text_screen}</th><td>{info_screen_size}</td><th>{text_IMEI}</th><td>{info_IMEI}</td></tr>
+                <tr><th>{text_location}</th><td>{info_location}</td><th>{text_ProvidersName}</th><td>{info_ProvidersName}</td></tr>
+                <tr><th>{text_language}</th><td>{info_language}</td><th>{text_NativePhoneNumber}</th><td>{info_NativePhoneNumber}</td></tr>
+            </table>
+        </div>
+    </div>
+    <div class="window-clipboard">
+        <div>
+            <p>{text_clipboard}</p>
+            <textarea>{info_clipboard}</textarea>
+            <button>{text_send}</button>
+        </div>
+    </div>
+</div>

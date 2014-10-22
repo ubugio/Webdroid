@@ -1,0 +1,24 @@
+.help-title {
+    font-size: 15px;
+    border-bottom: 1px solid #58E068;
+    padding-bottom: 1px;
+    margin-bottom: 17px;
+}
+.window-help-container {
+    padding: 10px 20px;
+}
+.help-title .help-title-mark {
+    background: #58E068;
+    display: inline-block;
+    font-size: 25px;
+    padding: 5px 2px 0 2px;
+}
+.window-help {
+height: 490px;
+overflow: auto;
+}
+.window-help-container.window-help-updatas div.list span {
+    font-weight: bold;
+    border-left: 3px solid #4164D3;
+    padding-left: 10px;
+}

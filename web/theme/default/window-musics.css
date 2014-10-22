@@ -1,0 +1,156 @@
+.window-musics-title {
+border-bottom: 1px solid #ddd;
+}
+.window-musics-list,.window-musics-group {
+height: 452px;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-musics-group {
+width: 100px;
+}
+.window-musics-list img {
+width: 25px;
+height: 25px;
+border-radius: 4px;
+margin-right: 10px;
+margin-top: 3px;
+}
+.window-musics-list div {
+display: inline-block;
+vertical-align: top;
+font-size: 13px;
+}
+.window-musics-list ul li div span.name {
+font-weight: bold;
+}
+.window-musics-list ul li div span {
+display: inline-block;
+overflow: hidden;
+height: 30px;
+}
+.window-musics ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-musics-list ul li {
+    height: 30px;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    vertical-align: middle;
+    padding-left: 10px;
+    cursor:pointer;
+}
+.window-musics-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-musics-list ul li{background:#F1F1F1}
+.window-musics-list ul li:nth-child(even){background:#EBECEE}
+.window-musics-list ul li.select {
+background: #6EA3F1;
+}
+.window-musics-list ul li:hover {
+background: #FDFDFD;
+}
+.window-musics-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-musics-list {
+    height: 452px;
+    overflow: auto;
+    width: 795px;
+}
+.i-float-left.window-contact-page-img {
+    float: left;
+    margin: 10px 20px;
+}
+.i-float-left {
+    float: left;
+}
+.window-musics span.artist {
+    width: 100px;
+    text-align: center;
+}
+.window-musics span.album {
+    width: 100px;
+    text-align: center;
+}
+.window-musics span.lastModified {
+    width: 100px;
+    text-align: center;
+}
+.window-musics span.size {
+    width: 85px;
+    text-align: center;
+}
+.window-musics span.duration {
+    width: 65px;
+    text-align: center;
+}
+.window-musics span.name {
+    width: 305px;
+    overflow: hidden;
+}
+li.window-musics-list-more {
+text-align: center;
+background: #ECECEC;
+}
+.window-musics-list ul li.title {
+    height: 20px;
+    display: block;
+    line-height: 20px;
+    background: #BAEDF6;
+    background-image: -webkit-linear-gradient(#D8D8D8, #B3B3B3);
+}
+.window-musics-list ul li.title span {
+    height: 21px;
+    text-align: center;
+    border-right: 1px solid #E9E9E9;font-size: 12px;
+}
+.window-musics-list ul li.title span.name{
+font-weight:normal;
+}
+.window-musics-list ul li.title span.head-title {
+    width: 30px;
+    display: inline-block;
+}
+.window-musics-list-scroll{
+height: 430px;
+overflow: auto;
+}
+.window-musics .tools {
+    display: inline-block;
+    float: right;
+    height: 27px;
+    line-height: 27px;
+    margin-right: 15px;
+}
+.window-musics .tools div {
+    float: right;
+}
+.window-musics .tools div a {
+    text-decoration: none;
+    text-align: center;
+    background: #5F8BEB;
+    margin: 0 5px;
+    padding: 1px 6px;
+    color: #fff;
+}
+.window-musics .tools div a:hover {
+    background: #2372C7;
+}

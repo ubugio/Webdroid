@@ -1,0 +1,131 @@
+.window-videos-title {
+border-bottom: 1px solid #ddd;
+}
+.window-videos-list,.window-videos-group {
+height: 430px;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-videos-group {
+width: 200px;
+}
+.window-videos-list img {
+width: 120px;
+height: 120px;
+margin: 4px 0;
+}
+.window-videos-list div {
+display: inline-block;
+width: 120px;
+vertical-align: top;
+font-size: 12px;
+overflow: hidden;
+}
+.window-videos-list ul li div span.name {
+font-weight: bold;
+}
+.window-videos-list ul li div span {
+display: inline-block;
+overflow: hidden;
+/* height: 60px; */
+}
+.window-videos ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-videos-list ul li {
+    height: 160px;
+    border: 1px solid #ddd;
+    float: left;
+    width: 120px;
+    padding: 0 5px;
+    margin: 5px;
+}
+.window-videos-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-videos-list ul li.select {
+background: #6EA3F1;
+}
+.window-videos-list ul li:hover {
+background: #F0F0F0;
+}
+.window-videos-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-videos-list {
+    height: 430px;
+    overflow: auto;
+    width: 590px;
+}
+.window-videos-group ul li {
+    height: 90px;
+    background: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    text-align: left;cursor: pointer;overflow: hidden;
+}
+.window-videos-group ul li.select {
+    border-left: 4px solid #4FBAD4;
+    font-weight: bold;
+}
+.window-videos-group ul li:hover {
+    font-weight: bold;
+}
+.i-float-left.window-contact-page-img {
+    float: left;
+    margin: 10px 20px;
+}
+.i-float-left {
+    float: left;
+}
+.window-videos-list-scroll{
+height: 430px;
+overflow: auto;
+}
+.window-videos-group ul li img {
+    width: 80px;
+    margin: 4px 8px;
+    border: 1px solid #ddd;
+}
+.window-videos-group ul li div {
+    display: inline-block;
+    height: 90px;
+    vertical-align: top;
+    line-height: 48px;
+}
+.window-videos-group ul li div span {
+    display: block;
+}
+.window-videos-group ul li div span.name {
+    font-size: 14px;
+    font-weight: bold;
+}
+.window-videos-info {
+    line-height: 15px;
+    padding-left: 20px;
+}
+.window-videos-info span {
+    margin-right: 20px;
+}
+li.window-videos-list-more {
+font-size: 20px;
+line-height: 160px;
+text-align: center;
+font-weight: bold;
+}

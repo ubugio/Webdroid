@@ -1,0 +1,151 @@
+.window-upload-title {
+border-bottom: 1px solid #ddd;
+height: 27px;
+}
+.window-upload-container {
+height: 433px;
+}
+.window-upload-list,.window-upload-group {
+height: 100%;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-upload-list div {
+display: inline-block;
+vertical-align: top;
+font-size: 12px;
+}
+.window-upload-path {
+height: 27px;
+line-height: 27px;
+margin-left: 10px;
+}
+.window-upload-list ul li div span.name {
+font-weight: bold;
+}
+.window-upload-list ul li div span {
+display: inline-block;
+overflow: hidden;
+height: 45px;
+}
+.window-upload ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-upload-list ul li {
+    height: 45px;
+    border-bottom: 1px solid #ddd;
+    line-height: 48px;
+    vertical-align: middle;
+    padding-left: 10px;
+    cursor:pointer;
+}
+.window-upload-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-upload-list ul li.select {
+background: #6EA3F1;
+}
+.window-upload-list ul li:hover {
+background: #F0F0F0;
+}
+.window-upload-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-upload-list {
+    height: 100%;
+    overflow: auto;
+    width: 797px;
+}
+.i-float-left {
+    float: left;
+}
+.window-upload span.size {
+    width: 70px;
+    text-align: center;
+}
+.window-upload span.version {
+    width: 100px;
+    text-align: center;
+}
+.window-upload span.name {
+    width: 325px;
+}
+.window-upload span.progress {
+width: 110px;
+}
+.window-upload-list ul li.title {
+    height: 20px;
+    display: block;
+    line-height: 20px;
+    background: #BAEDF6;
+}
+.window-upload-list ul li.title span {
+    height: 21px;
+    text-align: center;
+    border-right: 1px solid #40A5BE;font-size: 12px;
+}
+.window-upload-list ul li.title span.name{
+font-weight:normal;
+}
+.window-upload-list ul li span {
+display: inline-block;
+}
+.window-upload .tools {
+    display: inline-block;
+    float: right;
+    height: 27px;
+    line-height: 27px;
+    margin-right: 15px;
+}
+.window-upload .tools div {
+    float: right;
+}
+.window-upload .tools div a {
+    text-decoration: none;
+    text-align: center;
+    background: #5F8BEB;
+    margin: 0 5px;
+    padding: 1px 6px;
+    color: #fff;
+}
+.window-upload .tools div a:hover {
+    background: #2372C7;
+}
+.window-upload input#Files {
+width: 70px;
+margin: 2px 5px;
+}
+.window-upload a#upload_file {
+    position: relative;
+    left: -73px;
+}
+.window-upload-ztree {
+    position: absolute;
+    display:none;
+    top: 50%;
+    height: 400px;
+    overflow: auto;
+    margin-top: -200px;
+    left: 50%;
+    width: 250px;
+    margin-left: -125px;
+    background: #DDE7FF;
+    border: 1px solid #93A8E9;
+    border-top-width: 20px;
+}

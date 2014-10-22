@@ -1,0 +1,131 @@
+.window-images-title {
+border-bottom: 1px solid #ddd;
+}
+.window-images-list,.window-images-group {
+height: 430px;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-images-group {
+width: 200px;
+}
+.window-images-list img {
+width: 120px;
+height: 120px;
+margin: 4px 0;
+}
+.window-images-list div {
+display: inline-block;
+width: 120px;
+vertical-align: top;
+font-size: 12px;
+overflow: hidden;
+}
+.window-images-list ul li div span.name {
+font-weight: bold;
+}
+.window-images-list ul li div span {
+display: inline-block;
+overflow: hidden;
+/* height: 60px; */
+}
+.window-images ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-images-list ul li {
+    height: 160px;
+    border: 1px solid #ddd;
+    float: left;
+    width: 120px;
+    padding: 0 5px;
+    margin: 5px;
+}
+.window-images-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-images-list ul li.select {
+background: #6EA3F1;
+}
+.window-images-list ul li:hover {
+background: #F0F0F0;
+}
+.window-images-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-images-list {
+    height: 430px;
+    overflow: auto;
+    width: 590px;
+}
+.window-images-group ul li {
+    height: 90px;
+    background: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    text-align: left;cursor: pointer;overflow: hidden;
+}
+.window-images-group ul li.select {
+    border-left: 4px solid #4FBAD4;
+    font-weight: bold;
+}
+.window-images-group ul li:hover {
+    font-weight: bold;
+}
+.i-float-left.window-contact-page-img {
+    float: left;
+    margin: 10px 20px;
+}
+.i-float-left {
+    float: left;
+}
+.window-images-list-scroll{
+height: 430px;
+overflow: auto;
+}
+.window-images-group ul li img {
+    width: 80px;
+    margin: 4px 8px;
+    border: 1px solid #ddd;
+}
+.window-images-group ul li div {
+    display: inline-block;
+    height: 90px;
+    vertical-align: top;
+    line-height: 48px;
+}
+.window-images-group ul li div span {
+    display: block;
+}
+.window-images-group ul li div span.name {
+    font-size: 14px;
+    font-weight: bold;
+}
+.window-images-info {
+    line-height: 15px;
+    padding-left: 20px;
+}
+.window-images-info span {
+    margin-right: 20px;
+}
+li.window-images-list-more {
+font-size: 20px;
+line-height: 160px;
+text-align: center;
+font-weight: bold;
+}

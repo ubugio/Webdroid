@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ToggleButton
+        android:id="@+id/toggleBtn_nano"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="61dp"
+        android:textOff="@string/btn_start"
+        android:textOn="@string/btn_stop"
+        android:textSize="35sp" />
+    <TextView
+        android:id="@+id/urlText_nano"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toggleBtn_nano"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/urlText_userList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/urlText_nano"
+        android:layout_centerVertical="true"
+        android:textSize="20sp" />
+
+</RelativeLayout>

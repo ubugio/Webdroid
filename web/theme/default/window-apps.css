@@ -1,0 +1,133 @@
+.window-apps-title {
+border-bottom: 1px solid #ddd;
+}
+.window-apps-list,.window-apps-group {
+height: 452px;
+display:inline-block;
+overflow: auto;
+width: 276px;
+background: #FAFAFA;
+border: 1px solid #ddd;
+margin-top: -1px;
+}
+.window-apps-group {
+width: 100px;
+}
+.window-apps-list img {
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+}
+.window-apps-list div {
+display: inline-block;
+vertical-align: top;
+font-size: 14px;
+}
+.window-apps-list ul li div span.name {
+font-weight: bold;
+}
+.window-apps-list ul li div span {
+display: inline-block;
+overflow: hidden;
+height: 60px;
+}
+.window-apps ul {
+    list-style: none;
+    padding: 0;
+    margin:0;
+}
+.window-apps-list ul li {
+    height: 60px;
+    border-bottom: 1px solid #ddd;
+    line-height: 60px;
+    vertical-align: middle;
+    padding-left: 10px;
+    cursor:pointer;
+}
+.window-apps-list ul li span.head {
+display: inline-block;
+width: 53px;
+height: 53px;
+border-radius: 9px;
+margin-right: 10px;
+margin-top: 4px;
+background: #CADDFF;
+text-align: center;
+line-height: 53px;
+font-size: 23px;
+font-weight: bold;
+}
+.window-apps-list ul li.select {
+background: #6EA3F1;
+}
+.window-apps-list ul li:hover {
+background: #F0F0F0;
+}
+.window-apps-list ul li.select:hover {
+background: #6EA3F1;
+}
+.window-apps-list {
+    height: 452px;
+    overflow: auto;
+    width: 685px;
+}
+.window-apps-group ul li {
+    height: 30px;
+    background: #F5F5F5;
+    border-bottom: 1px solid #ddd;
+    line-height: 30px;
+    text-align: center;cursor: pointer;overflow: hidden;
+}
+.window-apps-group ul li.select {
+    border-left: 4px solid #4FBAD4;
+    font-weight: bold;
+}
+.window-apps-group ul li:hover {
+    font-weight: bold;
+}
+.i-float-left.window-contact-page-img {
+    float: left;
+    margin: 10px 20px;
+}
+.i-float-left {
+    float: left;
+}
+.window-apps span.installT {
+    width: 100px;
+    text-align: center;
+}
+.window-apps span.size {
+    width: 70px;
+    text-align: center;
+}
+.window-apps span.version {
+    width: 100px;
+    text-align: center;
+}
+.window-apps span.name {
+    width: 325px;
+}
+.window-apps-list ul li.title {
+    height: 20px;
+    display: block;
+    line-height: 20px;
+    background: #BAEDF6;
+}
+.window-apps-list ul li.title span {
+    height: 21px;
+    text-align: center;
+    border-right: 1px solid #40A5BE;font-size: 12px;
+}
+.window-apps-list ul li.title span.name{
+font-weight:normal;
+}
+.window-apps-list ul li.title span.head-title {
+    width: 58px;
+    display: inline-block;
+}
+.window-apps-list-scroll{
+height: 430px;
+overflow: auto;
+}

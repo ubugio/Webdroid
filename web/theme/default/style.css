@@ -1,0 +1,763 @@
+/*img{
+webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}*/
+::-webkit-scrollbar-track-piece{background-color: rgba(0, 0, 0, 0.05);}
+::-webkit-scrollbar{width: 10px;}
+::-webkit-scrollbar-thumb{background:#999;width: 10px;border-radius: 10px;}
+::-webkit-scrollbar-thumb:hover {background: #5C5C5C;} 
+body {
+    margin: 0;
+    padding: 0;
+    font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;
+    font-family: 'Lucida Grande','Trebuchet MS','Hiragino Sans GB','Segoe UI Light','Segoe UI','Microsoft Jhenghei','微软雅黑',sans-serif;
+    overflow: hidden;
+}
+.wrap-desktop {
+    width: 100%;
+    height: 100%;
+    background:url(images/default.jpg) no-repeat center center;
+    background-size: cover;
+}
+.layout-topbar {
+    height: 35px;
+    width: 100%;
+    position:absolute;
+    top:0;
+}
+.layout-taskbar {
+    height: 40px;
+    position:absolute;
+    bottom:0;
+    width: 100%;background: rgba(73, 115, 179, 0.64);
+}
+.status{
+    float:right;
+    width:200px;
+}
+.container-tabs{
+margin-right:200px;
+height: 40px;
+overflow-y: auto;
+}
+.layout-desktop {
+    position: absolute;
+    top: 35px;
+    width: 100%;
+}
+.loading {
+width: 80px;
+margin-left:-40px;
+height: 10px;
+position: absolute;
+top: 50%;
+left: 50%;
+background:url(images/animate-loading-blue.png);
+	background-position:0 -340px;
+	-moz-animation:movedown 2s steps(34) infinite normal ;
+	-webkit-animation:movedown 2s steps(34) infinite normal;
+}
+@-moz-keyframes movedown {
+	0% {
+	background-position:0 0;
+}
+100% {
+	background-position:0 -340px;
+}
+}
+@-webkit-keyframes movedown {
+	0% {
+	background-position:0 0;
+}
+100% {
+	background-position:0 -340px;
+}
+}
+input:focus, textarea:focus {
+outline: 0;
+border-color: rgba(82,168,236,.8);
+-webkit-box-shadow: inset 0 1px 3px rgba(0,0,0,.1),0 0 8px rgba(82,168,236,.6);
+-moz-box-shadow: inset 0 1px 3px rgba(0,0,0,.1),0 0 8px rgba(82,168,236,.6);
+box-shadow: inset 0 1px 3px rgba(0,0,0,.1),0 0 8px rgba(82,168,236,.6);
+}
+/*********** icons *******************/
+#icon-sms .num {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #FFFFFF;
+    color: #a10;
+    font-size: 15px;
+    font-weight: bold;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px #ddd;
+}
+.window-sms-group-list .new:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: block;
+    position: absolute;
+    background: #23D64E;
+    right: 10px;
+    top: 50%;
+    margin-top: -5px;
+    border-radius: 50%;
+}
+.window-sms-group-list .new {
+    position: relative;
+}
+.container-icons{position:relative;}
+.icon {
+    position: absolute;
+    width: 80px;
+    max-height: 90px;
+    border-radius: 6px;
+    text-align: center;
+    padding: 5px 2px;
+    -webkit-transition: all .2s;
+    cursor: pointer;
+}
+img.icon-img {
+    width: 60px;
+    height: 60px;
+    display: block;
+    margin: 5px auto;
+}
+span.icon-title {
+    padding: 4px 7px;
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 10px;
+    color: #fff;
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    -webkit-transition: all .2s;
+}
+.icon div {
+position: absolute;
+width: 100%;
+height: 100%;
+top: 0;
+left: 0;
+}
+.icon.select,.icon:hover {
+    background: rgba(60, 60, 60, 0.4);
+}
+.icon.select span,.icon:hover span {
+    background: rgba(151, 151, 151, 0.38);
+}
+/********************** phone **********************/
+.phone-panel {
+    text-align: center;
+    padding: 15px;
+}
+.phone-panel img {
+    border-radius: 50%;
+    border: 4px solid #ddd;
+    width: 88px;
+    position:relative;
+}
+.phone-buttons div.outgoing {
+display: none;
+}
+.phone-buttons div.phone-reject.outgoing {
+display: block;
+margin-top: 35px;
+}
+.phone-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+.phone-number {
+    margin-top: 5px;
+}
+.phone-buttons div {
+    height: 25px;
+    cursor: pointer;
+    line-height: 25px;
+    margin: 2px 0;
+    background: #ddd;
+    border-radius: 5px;
+}
+.phone-answer.incoming {background: #77E753;}
+.phone-buttons div.phone-reject {background: #BD2020;color: #fff;}
+.phone-answer.incoming:hover {background: #64C935;}
+.phone-buttons div.phone-reject:hover {background: #A82D2D;}
+.phone-buttons div.phone-reject-message:hover {background: #CFCFCF;}
+/*********************DIAL****************************/
+.dial-panel-num-buttons div {
+    width: 40px;
+    margin: 3px 15px;
+    height: 40px;
+    float: left;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    background: #ECECEC;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+.dial-panel-num-buttons div:hover {
+    background: #ddd;
+}
+.dial-panel-delete {
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    right: 6px;
+    font-size: 25px;
+    cursor: pointer;
+}
+input.dial-panel-input {
+    padding: 0 30px 0 7px;
+    border: 1px solid #ddd;
+    box-shadow: inset 1px 2px 2px #F7F7F7;
+    height: 37px;
+    line-height: 37px;
+    margin: 0 -1px;
+    width: 222px;
+    font-size: 20px;
+}
+.dial-panel-num-input {
+    margin-bottom: 5px;
+}
+.dial-panel-operate {
+    clear: left;
+    border-top: 1px solid #ddd;
+    margin-left: -1px;
+}
+.dial-panel-operate div {
+    display: inline-block;
+    width: 110px;
+    text-align: center;
+    height: 33px;
+    line-height: 30px;
+    margin: 0;
+    cursor: pointer;
+}
+.dial-panel-num-buttons {
+    height: 195px;
+}
+.dial-panel-operate div.dial-panel-call {
+    border-right: 1px solid #ddd;
+    border-radius: 0 0 0 8px;
+}
+.dial-panel-operate div:hover {
+    background: #ddd;
+}
+.dial-panel-message {
+    border-radius: 0 0 8px 0;
+}
+/****************image-preview************************/
+.image-preview,.video-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #333;
+    z-index: 99999999;
+}
+.video-preview {
+    display: table;
+}
+.image-preview .close {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    color: #fff;
+    background: rgba(221, 221, 221, 0.4);
+    text-align: center;
+    line-height: 50px;
+    border-radius: 0 0 0 50%;
+    cursor: pointer;
+    z-index: 99999;
+}
+.image-preview span.imgCon {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+.image-preview img {
+    opacity:0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    -webkit-transition: all .5s;
+    transform: rotate(0deg) scale(1, 1);
+    cursor:move;
+    background:url(images/transfer.png);
+    background-attachment:fixed;
+}
+.image_panel {
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    left: 0;
+    background: rgba(60, 60, 60, 1);
+    opacity: 0.5;
+    -webkit-transition: opacity .5s;
+    text-align: center;
+}
+.image_panel:hover {
+    opacity: 1;
+}
+.image_panel span {
+display: inline-block;
+width: 30px;
+height: 30px;
+font-size: 16px;
+line-height: 30px;
+text-align: center;
+color: #fff;
+background: #505050;
+margin: 9px 5px;
+cursor:pointer;
+}
+.image_panel span:hover {
+background: #707070;
+}
+/***********window-music*******************/
+canvas.music{border-bottom: 1px solid #D8D8D8;background: -webkit-gradient(radial,50% 50%,0,50% 50%,500,from(rgb(88, 88, 88)),to(rgb(0, 0, 0)));}
+p.window-music-player-title {
+position: absolute;
+top: 0;
+width: 100%;
+text-align: center;
+color: #DFFFF0;
+}
+.player-time {
+float: right;
+margin-right: 15px;
+width: 80px;
+}
+.player-volume {
+    margin-right: 80px;
+    height: 16px;
+    line-height: 16px;
+    position: relative;
+    margin-left: 10px;
+    width: 100px;
+    margin-top: -3px;
+}
+.player-volume span {
+    display: inline-block;
+    position: absolute;
+    height: 6px;
+    width: 100px;
+    margin-top: 4px;
+    margin-left: 5px;
+}
+span.player-fullvol {
+    border: 1px solid #ddd;
+}
+span.player-volnow {
+    width: 30%;
+    background: #30BAD5;
+    height: 8px;
+}
+.window-music-player-panel .player-progress {
+    height: 8px;
+    background: #D5D5D5;
+    margin:2px 10px 10px;
+}
+.player-status.player-play {
+    text-align: center;
+}
+.player-status.player-play span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background-image:url(images/main.png);
+}
+.player-status.player-play span.play {
+background-position: -844px -212px;
+}
+.player-status.player-play span.play:hover {
+background-position: -844px -253px;
+}
+.player-status.player-play span.pause {
+background-position: -1066px -212px;
+}
+.player-status.player-play span.pause:hover {
+background-position: -1066px -253px;
+}
+.window-music-player-panel span.player-played {
+    height: 8px;
+    display: inline-block;
+    width: 0%;
+    background: #4EAFDD;
+}
+.player-volume i {
+    margin-left: 110px;
+}
+canvas.music.music_mini {
+border: 0px;
+position: absolute;
+top: 10px;
+background: rgba(221, 221, 221, 0.17);
+}
+/****************notify********************/
+.layout-notifies {
+position: fixed;
+right: 0;
+bottom: 40px;
+}
+.notify .notify-icon img {
+    width: 40px;
+}
+.notify-body {
+    width: 250px;
+    display: table-cell;
+    min-height: 40px;
+    vertical-align: top;
+    padding: 8px 10px;
+}
+.notify-icon {
+    vertical-align: middle;
+    height: 100%;
+    width: 50px;
+    display: table-cell;
+    text-align: center;
+    background: #39B4DB;
+}
+.notify {
+    min-height: 70px;
+    margin: 5px;
+    background: #80B2F1;
+    display: table;
+}
+.notify-title {
+font-size: 15px;
+font-weight: bold;
+margin-bottom: 3px;
+padding-bottom: 4px;
+border-bottom: 1px solid #538FB8;
+}
+.notify-text {
+line-height: 20px;
+}
+/*-------------- toast ------------------*/
+.layout-toast {
+    height: 35px;
+    top: 50%;
+    position: fixed;
+    margin-top: -17px;
+    width: 100%;
+    display:none;
+    text-align: center;
+    z-index:99999999999;
+}
+.layout-toast-content {
+    display: inline-block;
+    height: 35px;
+    min-width: 70px;
+    background: #616161;
+    box-shadow: 0 0 30px #3D3D3D;
+    border-radius: 4px;
+    color: #fff;
+    line-height: 35px;
+    padding: 0 10px;
+    font-size: 15px;
+}
+/****************popup********************/
+.layout-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display:none;
+}
+.layout-popup-body {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    -webkit-transition: background .3s;
+}
+.layout-popup.on .layout-popup-body{
+    /*background: rgba(0, 0, 0, 0.76);*/
+}
+.popup {
+    width: 400px;
+    min-height: 200px;
+    margin: 0 auto;
+    background: #fff;
+    opacity:0;
+    transform:scale(0.5);
+    -webkit-transition: all .2s;
+}
+.layout-popup.on .popup{
+    opacity:1;
+    transform:scale(1);
+    position: relative;
+}
+.popup-body {
+    padding: 10px;
+}
+.popup-body input {
+border: 1px solid #D8D8D8;
+background: #FDF3C0;
+height: 26px;
+margin: 2px 5px;
+border-radius: 5px;
+padding: 6px;
+box-shadow: inset 1px 1px 3px #ddd;
+}
+.popup-title {
+    height: 30px;
+    background: #63AFEB;
+    line-height: 30px;
+    padding-left: 15px;
+}
+.popup-handle {
+    height: 30px;
+    background: #DFDFDF;
+    text-align: right;
+    padding-right: 20px;
+}
+.popup-handle div {
+    display: inline-block;
+    width: 40px;
+    height: 21px;
+    line-height: 21px;
+    text-align: center;
+    margin-top: 5px;
+    background: #7789E7;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.popup-handle div:hover {
+    background: #6375D3;
+}
+/****************window********************/
+.window {
+border: 1px solid #ddd;
+border-radius: 6px;
+box-shadow: 0 0 10px #949494;
+}
+.window_bg_container {
+    background: #F5F5F5;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    border-radius: 5px;
+}
+.window_content {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+.window_titleBar {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    background: #D5D5D5;
+    line-height: 30px;
+    border-radius: 5px 5px 0 0;
+    background-image: -webkit-linear-gradient(#E7EBF1, #D0D2D4);
+}
+.window_toolButtonBar.is-hide {
+    display: none;
+}
+.window_titleButtonBar {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+    width: 80px;
+}
+.window_title.titleText {
+    padding-left: 5px;
+    margin-right: 80px;
+    height: 30px;
+}
+img.window_icon {
+    width: 25px;
+    margin-top: -2px;
+}
+span.window_title_text.over-ellipsis {
+    padding-left: 5px;
+}
+.i{
+background:url(images/main.png) no-repeat;
+}
+.window_action_button {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    float: right;
+}
+.window_action_button.window_close {
+    background-position: -779px 7px;
+}
+.window_action_button.window_min {
+    background-position: -741px 7px;
+}
+.window_action_button.window_max {
+background-position: -760px 7px;
+}
+.window_action_button.window_close:hover {
+    background-position: -779px -12px;
+}
+.window_action_button.window_min:hover {
+    background-position: -741px -12px;
+}
+.window_action_button.window_max:hover {
+background-position: -760px -12px;
+}
+.window_action_button.window_setting {
+    background-position: -824px 3px;
+}
+.window_bodyOuter {
+position: absolute;
+top: 30px;width: 100%;
+}
+.content_area {
+height: 491px;
+overflow: hidden;
+}
+/**************任务栏********************/
+.tab {
+    height: 40px;
+    width: 150px;
+    color: #fff;
+    line-height: 40px;
+    font-size: 15px;
+    cursor:pointer;
+    background:url(images/taskbar_bg.png) no-repeat ;
+    background-size:cover;text-align: center;float: left;
+    -webkit-transition:all .5s;
+}
+.tab:hover {
+color: #C55050;
+}
+img.tab-img {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+.tab.hidden {
+background: rgba(0, 0, 0, 0.09);
+}
+.tab.hidden:hover {
+background: rgba(187, 140, 69, 0.09);
+}
+/************状态栏*************/
+.layout-notify-container>div {
+background:url(images/main.png) no-repeat;
+    width: 38px;
+    height: 30px;
+    display: inline-block;
+}
+.layout-notify-container {
+margin-top: 5px;
+}
+.device-status.layout-taskbar-connect-model.connect-local {
+    background-position: 10px -234px;
+}
+.layout-taskbar-wifi.wifi0 {background-position: 7px -347px;}
+.layout-taskbar-wifi.wifi1 {background-position: 7px -374px;}
+.layout-taskbar-wifi.wifi2 {background-position: 7px -403px;}
+.layout-taskbar-wifi.wifi3 {background-position: 7px -430px;}
+.layout-taskbar-wifi.wifi4 {background-position: 7px -458px;}
+.layout-taskbar-signal.signal0 {background-position: -35px -347px;}
+.layout-taskbar-signal.signal1 {background-position: -35px -374px;}
+.layout-taskbar-signal.signal2 {background-position: -35px -403px;}
+.layout-taskbar-signal.signal3 {background-position: -35px -430px;}
+.layout-taskbar-signal.signal4 {background-position: -35px -458px;}
+.device-status.layout-taskbar-battery.i-taskbar-battery {
+    background-position: 0 -273px;
+    position: relative;
+    width: 60px;
+}
+.layout-taskbar-battery-v.i-taskbar-battery-v.i-taskbar-battery-v-charging {
+width: 15px;
+height: 30px;
+background: url(images/main.png) no-repeat;
+background-position: -64 -273px;
+position: absolute;
+}
+.layout-taskbar-battery-vbg.i-taskbar-battery-vbg {
+    width: 10%;
+    height: 20px;  position: absolute;  
+    top: 6px;
+    border-radius: 2px 0 0 2px;
+background: url(images/main.png) no-repeat;
+    background-position: 1px -318px;
+}
+.layout-taskbar-battery-vbg.i-taskbar-battery-vbg.charging{
+animation:charging 5s linear 0 infinite normal;
+-moz-animation:charging 5s linear 0 infinite normal;
+-webkit-animation:charging 5s linear 0 infinite normal;
+-o-animation:charging 5s linear 0 infinite normal;
+background-position: -126px -318px;
+}
+@keyframes charging{0% {width:0%;}100% {width:100%;}}
+@-moz-keyframes charging{0% {width:0%;}100% {width:100%;}}
+@-webkit-keyframes charging{0% {width:0%;}100% {width:100%;}}
+@-o-keyframes charging{0% {width:0%;}100% {width:100%;}}
+.device-status.layout-taskbar-connect-model.connect-local .unlink {
+width: 10px;
+height: 10px;
+background: url(images/main.png) no-repeat;
+background-position: -124px -245px;
+}
+.layout-taskbar-battery-vbg.i-taskbar-battery-vbg.i-taskbar-battery-vbg-low {
+background-position: -60 -318px;
+}
+.layout-taskbar-battery-vbg.i-taskbar-battery-vbg.i-taskbar-battery-vbg-full {
+background-position: -126px -318px;
+}
+.layout-taskbar-battery-vt.i-taskbar-battery-vt {
+position: absolute;
+top: 10px;
+width: 60px;
+text-align: center;
+color: #ddd;
+}
+.layout-notify-container:after {
+content: "";
+display: block;
+width: 10px;
+height: 10px;
+position: absolute;
+right: 2px;
+top: 8px;
+background: #818181;
+border-radius: 10px;
+}
+.layout-notify-container.refreshing:after {
+background: #3EDF78;
+}
+.notify.notify-list {
+float: left;
+}
+/************通用List样式*************/
+
+/*************************/
+.ztree li span {
+max-width: 140px;
+text-overflow: ellipsis;
+overflow: hidden;
+display: inline-block;
+}

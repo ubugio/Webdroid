@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">air</string>
+    <string name="action_settings">设置</string>
+    <string name="open_nano_server">开启服务</string>
+    <string name="accessibility_service_label">air通知中心</string>
+    <string name="accessibility_service_description">开启本服务可以从客户端接收手机通知消息推送。</string>
+    <string name="btn_start">开始</string>
+    <string name="btn_stop">停止</string>
+    <string name="msg_net_off">未连接上网络</string>
+    <string name="title_activity_open_nano_server">服务状态</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_camera">CameraActivity</string>
+
+</resources>
