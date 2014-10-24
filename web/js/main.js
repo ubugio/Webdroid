@@ -5,7 +5,7 @@
         var _t=this;
         _t.Options={
             debug:!0,
-            ip:"192.168.0.101",
+            ip:"192.168.0.102",
             port:"7910",
             socketPort:"9999",
         

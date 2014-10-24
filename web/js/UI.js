@@ -88,6 +88,7 @@ TEMP['UI'] = function(air){
             width:800,
             height:520,
             zIndex:windowZindex++,
+            fixZindex:false,
             id:++windowIndex,
             onClose:null,
             onMin:null,
@@ -114,7 +115,7 @@ TEMP['UI'] = function(air){
             appContent:""
         }));
         //绑定点击事件
-        windowBind(windows[option.id],option.id,option.onClose,option.onMin);
+        windowBind(windows[option.id],option.id,option.onClose,option.onMin,option.fixZindex);
         // 设置window位置
         /*
         var num_h = $(".desktop").height()%h;
@@ -158,12 +159,12 @@ TEMP['UI'] = function(air){
     }
     //绑定窗体事件
     var window_z_index=50;
-    var windowBind = function(tar,id,onClose,onMin){
+    var windowBind = function(tar,id,onClose,onMin,fixZindex){
         tar.setContent=function(str){
             tar.find(".content_area").html(str);
         };
         tar.mousedown(function(){
-            tar.css("z-index",window_z_index++);
+            if(!fixZindex)tar.css("z-index",window_z_index++);
         });
         tar.find(".window_close").click(function(){
             tar.fadeOut(function(){

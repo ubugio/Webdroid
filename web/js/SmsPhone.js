@@ -140,6 +140,7 @@ var smsReceiver=function(data){
             width:300,
             height:300,
             zIndex:99999,
+            fixZindex:true,
             onClose:function(){
                 callingDown();
             },
@@ -195,18 +196,20 @@ var smsReceiver=function(data){
         }
     };
 //---------------------------拨打电话模块
-var DialPanel = null;
-var removeDialPanel = function(){
-    if(DialPanel!=null)
-        DialPanel.remove();
-};
-var showDialPanel = function(status,name,head,number){
+    var DialPanel = null;
+    var removeDialPanel = function(){
+        if(DialPanel!=null)
+            DialPanel.remove();
+    };
+    var showDialPanel = function(num){
+        num = num?num:"";
         DialPanel = air.require("UI").openWindow({
             title:air.Lang.dial_panel,
             iconSrc:air.Options.iconPath+"phone_80.png",
             width:220,
             height:300,
             zIndex:99999,
+            fixZindex:true,
             onClose:function(){
                 removeDialPanel();
             },
@@ -222,7 +225,7 @@ var showDialPanel = function(status,name,head,number){
         DialPanel.find(".dial-panel-input").keyup(function(){
             var text = DialPanel.find(".dial-panel-input").val();
             DialPanel.find(".dial-panel-input").val(text);
-        });
+        }).val(num);
         DialPanel.find(".dial-panel-num-buttons div").click(function(){
             var text = DialPanel.find(".dial-panel-input").val()+$(this).text();
             DialPanel.find(".dial-panel-input").val(text);
@@ -250,6 +253,7 @@ var showDialPanel = function(status,name,head,number){
     return {
         smsReceiver:smsReceiver,
         phoneReceiver:phoneReceiver,
-        showDialPanel:showDialPanel
+        showDialPanel:showDialPanel,
+        callNum:showDialPanel,
     };
 };

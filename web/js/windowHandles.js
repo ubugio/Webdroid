@@ -187,7 +187,7 @@ TEMP['windowHandles'] = function(air){
                         out+='</li>';
                     }
                     out+="</ul>";
-                json=data.groups;
+                    json=data.groups;
                     var out2="";
                     for(k in json){
                         out2+='<li data-ids="'+json[k].phones+'">'+json[k].name+'</li>';
@@ -215,10 +215,8 @@ TEMP['windowHandles'] = function(air){
                                     phone:phones[i]
                                 })
                             }
-                            
                             $(".window-contact-detailItem.phones").html(phone);
                         });
-                        tar.find("ul:eq(1)").find("li:eq(0)").click();
                         tar.find("ul:eq(0) li").click(function(){
                             tar.find("ul:eq(0) li").removeClass("select");
                             $(this).addClass("select");
@@ -244,6 +242,9 @@ TEMP['windowHandles'] = function(air){
                                         $(this).hide();
                                 });
                             }
+                        });
+                        tar.delegate(".window-contact-detail-call","click",function(){
+                            air.require("SmsPhone").callNum($(this).parent().parent().find(".phone").text().replace(/\s/g,""));
                         });
                     });
                 },function(e,t){
@@ -525,7 +526,7 @@ TEMP['windowHandles'] = function(air){
                             json[k].name=json[k].name?json[k].name:json[k].number;
                             var duration = tformat(json[k].duration,json[k].type);
                             var typePlus=duration=="未接通"?" fail":"";
-                            out+='<span class="call-status '+json[k].type+typePlus+'"></span>'+src+'<div><span class="name">'+json[k].name+'</span><span class="version">'+json[k].number+'</span><span class="installT">'+json[k].time+'</span><span class="size">'+duration+"</span></div>";
+                            out+='<span class="call-status '+json[k].type+typePlus+'"></span>'+src+'<div><span class="name">'+json[k].name+'</span><span class="version">'+json[k].number+'</span><span class="installT">'+json[k].time+'</span><span class="size">'+duration+'</span><span class="operate"><span class="message">发送消息</span><span class="call">呼叫</span></span></div>';
                         out+='</li>';
                     }
                     var o={
@@ -536,6 +537,7 @@ TEMP['windowHandles'] = function(air){
                         text_icon:air.Lang.text_icon,
                         text_number:air.Lang.text_number,
                         text_time:air.Lang.text_time,
+                        text_operate:air.Lang.text_operate,
                         text_duration:air.Lang.text_duration
                     };
                     air.require("Templete").getTemplate("window-phones",function(temp){
@@ -555,6 +557,9 @@ TEMP['windowHandles'] = function(air){
                                 tar.find("ul:eq(2) li").hide();
                                 tar.find("ul:eq(2) li[data-type="+ind+"]").show();
                             }
+                        });
+                        tar.delegate(".call","click",function(){
+                            air.require("SmsPhone").callNum($(this).parent().parent().find(".version").text().replace(/\s/g,""));
                         });
                     });
                 },function(e,t){
@@ -650,7 +655,7 @@ TEMP['windowHandles'] = function(air){
                         console.log(json);
                         var out="";
                         for(k in json){
-                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=110&id='+json[k].id+'" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
+                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img onerror="this.src=\'ggg\'" src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=110&id='+json[k].id+'" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
                         }
                         tar.find(".window-images-list-scroll li:last").before(out);
                     },function(e,t){

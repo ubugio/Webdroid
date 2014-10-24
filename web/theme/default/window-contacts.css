@@ -97,7 +97,10 @@ background: #6EA3F1;
     font-size: 18px;
     font-weight: bold;
 }
-.i-float-left.window-contact-page-img {}
+.i-float-left.window-contact-page-img {
+border: 1px solid #EEEEEE;
+background: #fff;
+}
 .window-contact-pageEntity {
     font-size: 15px;
     padding: 15px;

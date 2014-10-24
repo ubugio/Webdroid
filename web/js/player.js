@@ -23,6 +23,7 @@ TEMP['player'] = function(air){
             width:300,
             height:300,
             zIndex:99999,
+            fixZindex:true,
             
             id:"music_player",
             onClose:function(){
