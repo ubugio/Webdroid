@@ -653,9 +653,18 @@ span.screen-shot-fps {
     line-height: 15px;
     margin: 5px 25px;
     cursor: pointer;
+    background:url(images/main.png) no-repeat -6px -577px;
+    text-indent:999em;
+}
+.screen-shot-buttons span.screen-shot-button-home{
+    background-position: -42px -577px;
+}
+.screen-shot-buttons span.screen-shot-button-return{
+    background-position: -80px -577px;
 }
 .screen-shot-buttons span:hover {
     color: #a10;
+    background-position-y: -551px;
 }
 .screen-shot-buttons {
     border-bottom: 1px solid #ddd;
