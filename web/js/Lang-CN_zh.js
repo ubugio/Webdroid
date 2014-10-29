@@ -11,6 +11,7 @@ TEMP['Lang-CN_zh'] = function(air){
         icon_name_musics:"音乐管理",
         icon_name_images:"图片管理",
         icon_name_videos:"视频管理",
+        icon_name_screenshot:"屏幕截图",
         music_window_title:"音乐播放",
         icon_name_notifies:"通知管理",
         window_aleardy_existed:"窗口已经存在",
@@ -111,6 +112,7 @@ TEMP['Lang-CN_zh'] = function(air){
         reject_phone_with_message:"挂断并打开短信窗口",
         call_has_been_rejected:"通话已被取消",
         incoming_call_has_been_rejected:"来电已被取消",
+        screenShot:"手机屏幕",
         
         missedCall:"未接来电",
         outgoingCall:"已拨电话",

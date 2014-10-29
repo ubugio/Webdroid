@@ -438,12 +438,10 @@ public class NanoServer extends NanoHTTPD {
 				if(parms.get("action").equals("shot")){
 					InputStream in = null;
 					try {
-						in = ScreenShot.shot();
+						in = ScreenShot.shot(parms.get("width"),parms.get("height"),parms.get("quality"));
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					Response ret = new Response(Status.OK, "image/png",in);

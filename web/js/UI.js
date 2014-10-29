@@ -58,6 +58,7 @@ TEMP['UI'] = function(air){
             doubleClick:null,
             draggable:true
         };
+        if(config.click==null)config.click=option.click;
         $.extend(option,config);
         //解析模版
         icons[option.id] = $(PrivateSubstitute(iconTemplate,{

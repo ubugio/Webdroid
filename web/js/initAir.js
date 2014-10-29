@@ -40,7 +40,8 @@ TEMP['initAir'] = function(air){
             ui.newIcon({
                 name:icons[key]['name'],
                 src:air.Options.iconPath+icons[key]['src']+".png",
-                id:icons[key]['id']
+                id:icons[key]['id'],
+                click:icons[key]['click']?icons[key]['click']:null
             }).jqDrag(null,{
                 type:"grid",
                 width:90,

@@ -60,6 +60,14 @@ TEMP['icons'] = function(air){
             src:"notify_80",
             id:"notifies"
         },
+        "screenshot":{
+            name:air.Lang.icon_name_screenshot,
+            src:"screenshot_80",
+            id:"screenshot",
+            click:function(){
+                air.require("ScreenManage").openScreen();
+            }
+        }
     };
     
     return icons;
