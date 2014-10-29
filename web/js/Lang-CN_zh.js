@@ -78,6 +78,8 @@ TEMP['Lang-CN_zh'] = function(air){
         text_more:"加载更多",
         text_check:"确定",
         text_cancel:"取消",
+        text_remoteIp_getting:"获取远程注册地址中...",
+        text_remoteIp:"获取远程注册地址成功",
         text_clipboard_send_success:"内容成功发送到手机剪贴板",
         text_send_success:"发送成功",
         text_clipboard_send_fail:"内容成功没能发送成功",

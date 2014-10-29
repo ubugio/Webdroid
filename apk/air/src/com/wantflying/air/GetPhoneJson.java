@@ -3,9 +3,7 @@ package com.wantflying.air;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.ContentObserver;
 import android.net.Uri;
-import android.os.Handler;
 
 public class GetPhoneJson {
 	public PhoneReceiver phoneRcvr;
@@ -36,20 +34,5 @@ public class GetPhoneJson {
         }
 		return "{\"status\":\"ok\"}";
 	}
-}
-
-public class SmsObserver extends ContentObserver {        
-        private Context context;
-        private static final String[] SMS_PROJECTION = new String[] {"address","person","date","type","body",};
-
-        public SmsObserver(Context context,Handler handler) {
-                super(handler);                
-                this.context = context;
-                Log.i("Leo-SmsObserver", "My Oberver on create");
-        }
-        
-        public void onChange (boolean selfChange) {
-                Log.i("SmsObserver", "sms onChange###### ");                
-        }
 
 }

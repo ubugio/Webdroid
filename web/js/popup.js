@@ -30,6 +30,7 @@ TEMP['popup'] = function(air){
             option.cancelFunction && option.cancelFunction(tar);
             cancelPopup();
         });
+        return tar;
     };
     var cancelPopup=function(){
         air.Options.popupContainer.removeClass("on");

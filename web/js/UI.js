@@ -20,11 +20,11 @@ TEMP['UI'] = function(air){
     var tabIndex = -1;
     var tabs = {};
     var v_n=0;
-    var v_n_l=0;
+    var iconContainer_ajust=0;
     var resetIcons = function(icons_Order){
         v_n=Math.floor(($(".desktop").height())/h);
-        v_n_l=($(".desktop").height()-v_n*h)/2;
-        iconContainer.css("top",v_n_l+"px");
+        iconContainer_ajust=($(".desktop").height()-v_n*h)/2;
+        iconContainer.css("top",iconContainer_ajust+"px");
         $.each(icons_Order,function(i,v){
             var t_i = i%v_n;
             var l_i = (i-t_i)/v_n;
@@ -200,6 +200,7 @@ TEMP['UI'] = function(air){
     
     
     return {
+        iconContainer_ajust:iconContainer_ajust,
         resetIcons:resetIcons,
         icons_Order:icons_Order,
         vIconNum:v_n,

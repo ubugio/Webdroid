@@ -27,6 +27,7 @@ import com.wantflying.air.GetFileJson;
 import com.wantflying.air.GetPhoneJson;
 import com.wantflying.air.GetSmsJson;
 import com.wantflying.air.GetStatusJson;
+import com.wantflying.air.ScreenShot;
 import com.wantflying.server.NanoHTTPD.Response.Status;
 
 public class NanoServer extends NanoHTTPD {
@@ -432,6 +433,25 @@ public class NanoServer extends NanoHTTPD {
 					ret.addHeader("Cache-control", "no-cache");
 					ret.addHeader("Access-Control-Allow-Origin", "*");
 					return ret;
+				}
+			}else if(parms.get("mode").equals("screen")){
+				if(parms.get("action").equals("shot")){
+					InputStream in = null;
+					try {
+						in = ScreenShot.shot();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Response ret = new Response(Status.OK, "image/png",in);
+					ret.addHeader("Cache-control", "no-cache");
+					ret.addHeader("Access-Control-Allow-Origin", "*");
+					return ret;
+				}else if(parms.get("action").equals("record")){
+					//
 				}
 			}else{
 				return new Response("<html><body><h1>当前模块不存在</h1></body></html>");

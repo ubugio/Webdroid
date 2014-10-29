@@ -12,7 +12,8 @@ TEMP['initAir'] = function(air){
         var newOrder=[];
         var IconsOnDragfunction=function(tar,l,t){
             var l = (l-20)/90;
-            var t = t/105;
+            console.log(t);
+            var t = (t)/105;
             var keyNow = tar.attr("id").split("-")[1];
             var index = l*air.require("UI").vIconNum+t;
             var icons_Order = air.Options.icons_Order;
@@ -61,7 +62,7 @@ TEMP['initAir'] = function(air){
                 }
             });
         }
-        air.require("popup").popup({
+        var inputC = air.require("popup").popup({
             checkFunction:function(con){
                 air.Options.ip = con.find(".input-ip").val();
                 air.Options.port = con.find(".input-port").val();
@@ -81,6 +82,20 @@ TEMP['initAir'] = function(air){
                     IP:air.Options.ip,
                 })
         });
+        var inputCt= inputC.find(".input-mes").html();
+        inputC.find(".input-mes").html(inputCt+'<p style="color:#a10;">'+air.Lang.text_remoteIp_getting+'</p>');
+        air.require("dataTran").getJsonFromUrl("http://droid4web.sinaapp.com/ipget.php",
+        {},
+        function(data){
+            if(data.status=="ok"){
+                inputC.find(".input-ip").val(data.ip);
+                inputC.find(".input-port").val(data.port);
+                inputC.find(".input-socketPort").val(data.socketport);
+                inputC.find(".input-mes").html(inputCt+'<p style="color:#a10;">'+air.Lang.text_remoteIp+" ("+data.updatetime+')</p>');
+            }
+        },
+        function(){}
+        );
         
     };
     // 注入样式表方法
@@ -196,6 +211,7 @@ TEMP['initAir'] = function(air){
                 statusHandle(mes.data);
             }else if(mes.type=="sms"){
                 //if($("#"+mes.data.id).length==0)
+                console.log(mes.data.id);
                 air.require("notify").toast(air.Lang.text_sms+":"+air.Lang[mes.data.mes]);
                 $("#"+mes.data.id+" .sms-mes-status").text(air.Lang["sms_status_"+mes.data.mes]);
             }else if(mes.type=="smsR"){

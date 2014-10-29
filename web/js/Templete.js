@@ -114,7 +114,7 @@ TEMP['Templete'] = function(air){
                                 '</div>'+
                             '</div>',
         initSystemTemplate:'<div>'+
-                                '<p>{text_initSystemDesc}</p>'+
+                                '<p class="input-mes">{text_initSystemDesc}</p>'+
                                 '<div><span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemIp}</span><input type="text" class="input-ip" value="{IP}" /><br />'+
                                 '<span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemPort}</span><input type="text" class="input-port" value="{PORT}" /><br />'+
                                 '<span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemSocketPort}</span><input type="text" class="input-socketPort" value="{SOCKET}" /><br /></div>'+

@@ -1,8 +1,8 @@
 TEMP['dataTran'] = function(air){
-    var getJson = function(data,success,error,complete){
+    var getJsonFromUrl = function(url,data,success,error,complete){
         var error = error||function(){};
         $.ajax({
-            url:"http://" + air.Options.ip+":"+air.Options.port,
+            url:url,
             type:"get",
             dataType:"json",
             data:data,
@@ -12,9 +12,13 @@ TEMP['dataTran'] = function(air){
         });
     };
     
+    var getJsonFromUrlDefault=function(data,success,error,complete){
+        getJsonFromUrl("http://" + air.Options.ip+":"+air.Options.port,data,success,error,complete);
+    };
     
     
     return {
-        getJson:getJson
+        getJson:getJsonFromUrlDefault,
+        getJsonFromUrl:getJsonFromUrl,
     };
 };

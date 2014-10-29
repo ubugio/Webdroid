@@ -36,8 +36,48 @@ public class GetSmsJson {
     public final String SMS_URI_FAILED = "content://sms/failed";
     public final String SMS_URI_QUEUED = "content://sms/queued";
     
+    PendingIntent sentPI;
+    PendingIntent deliverPI;
+    String id;
+    
     public GetSmsJson(Context context){
     	mcontext = context;
+    	//---------------------------------------------------------------------------------短信发送状态
+    	String SENT_SMS_ACTION = "SENT_SMS_ACTION";
+    	Intent sentIntent = new Intent(SENT_SMS_ACTION);
+    	sentPI = PendingIntent.getBroadcast(mcontext, 0, sentIntent,0);
+    	// register the Broadcast Receivers
+    	mcontext.registerReceiver(new BroadcastReceiver() {
+    	    @Override
+    	    public void onReceive(Context _context, Intent _intent) {
+    	        switch (getResultCode()) {
+    	        case Activity.RESULT_OK:
+    				NanoWebSocketServer.userList.sendToAll("{\"type\":\"sms\",\"data\":{\"mes\":\"sended\",\"id\":\""+id+"\"}}");
+    	            Toast.makeText(mcontext,"短信发送成功", Toast.LENGTH_SHORT).show();
+    	        break;
+    	        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+    	        break;
+    	        case SmsManager.RESULT_ERROR_RADIO_OFF:
+    	        break;
+    	        case SmsManager.RESULT_ERROR_NULL_PDU:
+    	        break;
+    	        }
+    	    }
+    	}, new IntentFilter(SENT_SMS_ACTION));
+
+    	//---------------------------------------------------------------------------------短信接收状态
+    	String DELIVERED_SMS_ACTION = "DELIVERED_SMS_ACTION";
+    	// create the deilverIntent parameter
+    	Intent deliverIntent = new Intent(DELIVERED_SMS_ACTION);
+    	deliverPI = PendingIntent.getBroadcast(mcontext, 0,
+    	       deliverIntent, 0);
+    	mcontext.registerReceiver(new BroadcastReceiver() {
+    	   @Override
+    	   public void onReceive(Context _context, Intent _intent) {
+				NanoWebSocketServer.userList.sendToAll("{\"type\":\"sms\",\"data\":{\"mes\":\"received\",\"id\":\""+id+"\"}}");
+    	       Toast.makeText(mcontext, "收信人已经成功接收", Toast.LENGTH_SHORT).show();
+    	   }
+    	}, new IntentFilter(DELIVERED_SMS_ACTION));
     }
     public String getSmsGroups() {
 		List<Map<String, Object>> listems = new ArrayList<Map<String, Object>>();
@@ -160,44 +200,9 @@ public class GetSmsJson {
         return jsonresult;  
   
     }
-    public String sendSMS(String number,String content,final String id){
-    	//---------------------------------------------------------------------------------短信发送状态
-    	String SENT_SMS_ACTION = "SENT_SMS_ACTION";
-    	Intent sentIntent = new Intent(SENT_SMS_ACTION);
-    	PendingIntent sentPI = PendingIntent.getBroadcast(mcontext, 0, sentIntent,0);
-    	// register the Broadcast Receivers
-    	mcontext.registerReceiver(new BroadcastReceiver() {
-    	    @Override
-    	    public void onReceive(Context _context, Intent _intent) {
-    	        switch (getResultCode()) {
-    	        case Activity.RESULT_OK:
-    				NanoWebSocketServer.userList.sendToAll("{\"type\":\"sms\",\"data\":{\"mes\":\"sended\",\"id\":\""+id+"\"}}");
-    	            Toast.makeText(mcontext,"短信发送成功", Toast.LENGTH_SHORT).show();
-    	        break;
-    	        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-    	        break;
-    	        case SmsManager.RESULT_ERROR_RADIO_OFF:
-    	        break;
-    	        case SmsManager.RESULT_ERROR_NULL_PDU:
-    	        break;
-    	        }
-    	    }
-    	}, new IntentFilter(SENT_SMS_ACTION));
-
-    	//---------------------------------------------------------------------------------短信接收状态
-    	String DELIVERED_SMS_ACTION = "DELIVERED_SMS_ACTION";
-    	// create the deilverIntent parameter
-    	Intent deliverIntent = new Intent(DELIVERED_SMS_ACTION);
-    	PendingIntent deliverPI = PendingIntent.getBroadcast(mcontext, 0,
-    	       deliverIntent, 0);
-    	mcontext.registerReceiver(new BroadcastReceiver() {
-    	   @Override
-    	   public void onReceive(Context _context, Intent _intent) {
-				NanoWebSocketServer.userList.sendToAll("{\"type\":\"sms\",\"data\":{\"mes\":\"received\",\"id\":\""+id+"\"}}");
-    	       Toast.makeText(mcontext, "收信人已经成功接收", Toast.LENGTH_SHORT).show();
-    	   }
-    	}, new IntentFilter(DELIVERED_SMS_ACTION));
+    public String sendSMS(String number,String content,String _id){
     	//---------------------------------------------------------------------------------短信发送
+    	id = _id;
     	SmsManager smsManager = SmsManager.getDefault();
     	List<String> divideContents = smsManager.divideMessage(content);
     	for (String text : divideContents) {
