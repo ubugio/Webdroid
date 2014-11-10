@@ -2,6 +2,7 @@ package com.wantflying.air;
 
 import java.io.File;
 import java.util.Locale;
+import java.util.Vector;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -352,10 +353,12 @@ public class GetStatusJson {
         info_network_typename=net.getConnTypeName();
         info_network_isWIFI=String.valueOf(NetWorkUtil.isConnectWifi(mcontext.getApplicationContext()));
     }
-    public void getDisplayMetrics() {
+    public Vector<Integer> getDisplayMetrics() {
     	DisplayMetrics dm = new DisplayMetrics();
     	dm = mcontext.getApplicationContext().getApplicationContext().getResources().getDisplayMetrics();
     	info_screen_size=String.valueOf(dm.widthPixels)+ "X"+String.valueOf(dm.heightPixels) ;
+    	Vector<Integer> vec = new Vector<Integer>();vec.add(dm.widthPixels);vec.add(dm.heightPixels);
+    	return vec;
     }
     public String getDeviceId() {
     	TelephonyManager tm = (TelephonyManager) mcontext.getApplicationContext()

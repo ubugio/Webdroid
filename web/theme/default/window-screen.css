@@ -1,0 +1,60 @@
+
+/****************screenShot************************/
+span.screen-shot-fps {
+    position: absolute;
+    left: 0;
+    color: #fff;
+    top:20px;
+}
+.screen-shot-buttons,.screen-shot-buttonsContain {
+    height: 25px;
+}
+.screen-shot-buttons span {
+    display: inline-block;
+    width: 37px;
+    text-align: center;
+    height: 15px;
+    line-height: 15px;
+    margin: 5px 25px;
+    cursor: pointer;
+    background:url(images/main.png) no-repeat -6px -577px;
+    text-indent:999em;
+}
+.screen-shot-buttons span.screen-shot-button-home{
+    background-position: -42px -577px;
+}
+.screen-shot-buttons span.screen-shot-button-return{
+    background-position: -80px -577px;
+}
+.screen-shot-buttons span:hover {
+    color: #a10;
+    background-position-y: -551px;
+}
+.screen-shot-buttons {
+    border-bottom: 1px solid #ddd;
+    background: #000;
+    color: #fff;
+}
+.screen-shot-buttonsContain span {
+    height: 15px;
+    margin: 0 13px;
+    padding: 2px 3px;
+    cursor: pointer;
+}
+.screen-shot-buttonsContain span:hover {
+    background: #ddd;
+}
+.screen-shot-buttonsContain span.active {
+    background: #93F835;
+}
+.screen-shot {
+    width: 270px;
+    display:inline-block;
+}
+.screen-shot-buttons-right {
+    width: 265px;  display: inline-block;
+    vertical-align: top;
+}
+.screen-shot-imageContain {
+position: relative;
+}

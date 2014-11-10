@@ -493,12 +493,23 @@ TEMP['windowHandles'] = function(air){
                             uploader.uploadFile(uploadFileArr[i],function(e){
                                 tar.find('progress:eq('+i+')').attr({value:e.loaded,max:e.total});
                             },function(){
-                                tar.find('.progress').html("上传成功");
+                                tar.find('.progress:eq('+(i+1)+')').html("上传成功");
                             },function(){
-                                tar.find('.progress').html("上传出错");
+                                tar.find('.progress:eq('+(i+1)+')').html("上传出错");
                             });
                         });
                     });
+                    tar.find('#upload_clear').click(function(){
+                        var l = 0;
+                        tar.find(".window-upload-list-scroll").find("li").css("position","relative").each(function(i,v){
+                            $(this).animate({"left":"-800px"},i*300);
+                            l=i;
+                        });
+                        setTimeout(function(){
+                            tar.find(".window-upload-list-scroll").empty();
+                        },l*300);
+                    });
+                    
                 } else {
                     alert('您的浏览器不支持File Api');
                 }

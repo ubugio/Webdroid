@@ -1,0 +1,25 @@
+.terminal {
+    height: 100%;
+    background: #292929;
+    color: #fff;
+    font-size: 12px;
+    line-height: 14px;
+    overflow-y: auto;
+overflow-x: hidden;
+}
+input.terminal-input {
+    background: #363636;
+    border: 0;
+    margin-left: 5px;
+    color: #fff;
+    outline: 0;
+    box-shadow: none;
+}
+.terminal-list p {
+    margin: 0;
+    padding: 4px 0;
+}
+.terminal-list pre {
+margin: 0;
+padding-left: 10px;
+}

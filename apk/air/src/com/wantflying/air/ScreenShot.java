@@ -24,7 +24,7 @@ public class ScreenShot {
 		
 		int _quality=100;
 		if(quality.equalsIgnoreCase("prefect"))
-			_quality=100;
+			_quality=20;
 		if(quality.equalsIgnoreCase("good"))
 			_quality=80;
 		if(quality.equalsIgnoreCase("fine"))

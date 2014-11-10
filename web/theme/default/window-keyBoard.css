@@ -1,0 +1,182 @@
+.keyboard-screen input {
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+    height: 35px;
+    background: none;
+    font-size: 20px;
+    padding-left: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.keyboard-wrapper{
+  position: absolute;
+  top: 35px;
+  left: calc(50% - 400px);
+  width: 800px;
+  height: 270px;
+}
+
+.keyboard-wrapper ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.keyboard-wrapper ul li{
+  float: left;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: relative;
+}
+
+
+.keyboard-wrapper ul li:nth-child(14){
+  width: 90px;
+}
+
+.keyboard-wrapper ul li:nth-child(15){
+  width: 90px;
+}
+
+.keyboard-wrapper ul li:nth-child(41) {
+    width: 39px;
+    margin-right: -13px;
+    border-right: 0;
+    border-radius: 3px 0 0 3px;
+}
+.keyboard-wrapper ul li:nth-child(42) {
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.keyboard-wrapper ul li:nth-child(29){
+  width: 106px;
+}
+
+.keyboard-wrapper ul li:nth-child(43){
+  width: 119px;
+}
+
+.keyboard-wrapper ul li:nth-child(54){
+  width: 115px;
+}
+
+.keyboard-wrapper ul li:nth-child(55){
+  opacity: 0.5;
+}
+
+.keyboard-wrapper ul li:nth-child(43) .text{
+  margin-top: 22px !important;
+  margin-left: -10px;
+}
+
+.keyboard-wrapper ul li:nth-child(54) .text{
+  margin-top: 22px !important;
+  margin-left: 85px;
+}
+
+.keyboard-wrapper ul li:nth-child(58){
+  width: 55px;
+}
+
+.keyboard-wrapper ul li:nth-child(59){
+  width: 260px;
+}
+
+.keyboard-wrapper ul li:nth-child(60){
+  width: 55px;
+}
+
+.keyboard-wrapper ul li:nth-child(62){
+  height: 19px;
+  margin-top: 30px;
+}
+
+.keyboard-wrapper ul li:nth-child(63){
+  height: 18px;
+  margin-top: 9px;
+}
+
+.keyboard-wrapper ul li:nth-child(64){
+  height: 18px;
+  margin-top: 31px;
+  margin-left: -42px;
+}
+
+.keyboard-wrapper ul li:nth-child(65){
+  height: 19px;
+  margin-top: 30px;
+}
+
+.keyboard-wrapper ul li .text{
+  color: #444;
+  font-family: Helvetica;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  width: 40px;
+  height: 40px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.keyboard-wrapper ul li:nth-child(14) .text{
+  text-align: right;
+  margin-left: 40px;
+  font-weight: 100;
+  margin-top: 20px !important;
+  font-size: 23px;
+}
+
+.keyboard-wrapper ul li:nth-child(15) .text{
+  text-align: left;
+  margin-left: 4px;
+  font-weight: 0;
+  margin-top: 20px !important;
+  font-size: 23px;
+}
+
+.keyboard-wrapper ul li:nth-child(29) .text.active:before{
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  background: #98c225 !important;
+  box-shadow: 0 0 3px #98c225;
+  border-radius: 360px;
+}
+
+.keyboard-wrapper ul li:nth-child(29) .text:before{
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 5px;
+  height: 5px;
+  background: #333;
+  border-radius: 360px;
+}
+
+.keyboard-wrapper ul li:nth-child(29) .text{
+  margin-left: -10px;
+  padding-top: 5px;
+}
+
+.keyboard-wrapper ul li.activeKey .finger{
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: -5px;
+  left: -5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  border-radius: 360px;
+  background: rgba(28, 171, 233, 0.5);
+  opacity: 0;
+}

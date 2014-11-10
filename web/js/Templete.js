@@ -154,29 +154,12 @@ TEMP['Templete'] = function(air){
                                 '<div class="dial-panel-message">{MESSAGE}</div>'+
                             '</div>'+
                         '</div>',
-        screenShotTemplate:'<div class="screen-shot">'+
-                                '<div class="screen-shot-imageContain">'+
-                                    '<img src="">'+
-                                    '<span class="screen-shot-fps"></span>'+
-                                '</div>'+
-                                '<div class="screen-shot-buttons">'+
-                                    '<span class="screen-shot-button-menu">menu</span>'+
-                                    '<span class="screen-shot-button-home">home</span>'+
-                                    '<span class="screen-shot-button-return">return</span>'+
-                                '</div>'+
-                                '<div class="screen-shot-buttonsContain">'+
-                                    '<span class="screen-shot-button-fullScreen">全屏</span>'+
-                                    '<span class="screen-shot-button-interval">连续</span>'+
-                                    '<span class="screen-shot-button-refresh">刷新</span>'+
-                                    '<span class="screen-shot-button-quality">'+
-                                        '<select>'+
-                                            '<option value="poor" selected="selected">poor</option>'+
-                                            '<option value="fine">fine</option>'+
-                                            '<option value="good">good</option>'+
-                                            '<option value="prefect">prefect</option>'+
-                                        '</select>'+
-                                    '</span>'+
-                                '</div>'+
-                            '</div>'
+        terminalTemplate:'<div class="terminal">'+
+                            '<div class="terminal-list"></div>'+
+                            '<div class="terminal-bottom">'+
+                                '<span class="terminal-prefix">[<span class="terminal-user">air</span>@<span class="terminal-device">android</span> <span class="terminal-dir">/</span>] <span class="terminal-mode">$</span> </span>'+
+                                '<input class="terminal-input" type="text" />'+
+                            '</div>'+
+                        '</div>'
     };
 };

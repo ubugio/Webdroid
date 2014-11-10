@@ -83,20 +83,27 @@ TEMP['initAir'] = function(air){
                     IP:air.Options.ip,
                 })
         });
-        var inputCt= inputC.find(".input-mes").html();
-        inputC.find(".input-mes").html(inputCt+'<p style="color:#a10;">'+air.Lang.text_remoteIp_getting+'</p>');
-        air.require("dataTran").getJsonFromUrl("http://droid4web.sinaapp.com/ipget.php",
-        {},
-        function(data){
-            if(data.status=="ok"){
-                inputC.find(".input-ip").val(data.ip);
-                inputC.find(".input-port").val(data.port);
-                inputC.find(".input-socketPort").val(data.socketport);
-                inputC.find(".input-mes").html(inputCt+'<p style="color:#a10;">'+air.Lang.text_remoteIp+" ("+data.updatetime+')</p>');
-            }
-        },
-        function(){}
-        );
+        var ss = $('<p style="color:#a10;"></p>');
+        var ssb = $('<button>reload</button>');
+        inputC.find(".input-mes").append(ss);
+        inputC.find(".input-mes").append(ssb);
+        var load = function(){
+            ss.html(air.Lang.text_remoteIp_getting);
+            air.require("dataTran").getJsonFromUrl("http://droid4web.sinaapp.com/ipget.php",
+            {},
+            function(data){
+                if(data.status=="ok"){
+                    inputC.find(".input-ip").val(data.ip);
+                    inputC.find(".input-port").val(data.port);
+                    inputC.find(".input-socketPort").val(data.socketport);
+                    ss.html(air.Lang.text_remoteIp+" ("+data.updatetime+')');
+                }
+            },
+            function(){}
+            );
+        };
+        load();
+        ssb.click(function(){load();});
         
     };
     // 注入样式表方法

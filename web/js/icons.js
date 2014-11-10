@@ -67,6 +67,22 @@ TEMP['icons'] = function(air){
             click:function(){
                 air.require("ScreenManage").openScreen();
             }
+        },
+        "terminal":{
+            name:air.Lang.icon_name_terminal,
+            src:"terminal_80",
+            id:"terminal",
+            click:function(){
+                air.require("runCommond").openTerminal();
+            }
+        },
+        "keyboard":{
+            name:air.Lang.icon_name_keyboard,
+            src:"keyboard_80",
+            id:"keyboard",
+            click:function(){
+                air.require("keyBoard").openKeyBoard();
+            }
         }
     };
     

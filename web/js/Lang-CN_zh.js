@@ -13,6 +13,8 @@ TEMP['Lang-CN_zh'] = function(air){
         icon_name_videos:"视频管理",
         icon_name_screenshot:"屏幕截图",
         music_window_title:"音乐播放",
+        icon_name_terminal:"命令窗口",
+        icon_name_keyboard:"键盘",
         icon_name_notifies:"通知管理",
         window_aleardy_existed:"窗口已经存在",
         no_wifi:"无wifi",

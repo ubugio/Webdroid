@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
+import java.util.Vector;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -18,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.wantflying.air.CameraStart;
@@ -38,21 +40,41 @@ public class NanoServer extends NanoHTTPD {
 	public static GetFileJson FileJson=null;
 	public static GetSmsJson SmsJson=null;
 	public static GetPhoneJson PhoneJson=null;
+	public static ScreenShot screenShot=null;
+	public static runCommond cmd=null;
+	public static ShellUtil shell=null;
 	public static final String HTML_SUCCESS_STRING = "<html>"
 			+ "<head><title>Air</title></head>"
 			+ "<body>"
 			+ "upload Success !</body></html>";
+	public static Process sh=null;
+	Vector<Integer> screen;
 	
 	public NanoServer(int port,Context context) {
 		super(port);
 		mcontext = context;
+		checkAirDirs();
 		StatusJson = new GetStatusJson(mcontext);
+		screen = StatusJson.getDisplayMetrics();
 		ContactsJson = new GetContactsJson(mcontext);
 		AppsJson = new GetAppsJson(mcontext);
 		FileJson = new GetFileJson(mcontext);
 		SmsJson = new GetSmsJson(mcontext);
 		PhoneJson = new GetPhoneJson(mcontext);
-		
+		shell = ShellUtil.getInstance();
+		cmd = new runCommond(shell);
+	}
+	public static void checkAirDirs(){
+		String airDir = Environment.getExternalStorageDirectory().getPath()+ File.separator +"air";
+		File file = new File(airDir);
+    	if(file.exists() && file.isDirectory()){
+    		File file2 = new File(airDir+ File.separator +"screens");
+        	if(!(file2.exists() && file2.isDirectory())){
+        		file2.mkdir();
+        	}
+    	}else{
+    		file.mkdir();
+        }
 	}
 	public static File getFile(String fileFullPath) {
 		File f = new File(fileFullPath);
@@ -451,6 +473,62 @@ public class NanoServer extends NanoHTTPD {
 				}else if(parms.get("action").equals("record")){
 					//
 				}
+			}else if(parms.get("mode").equals("runcmd")){
+				System.out.println(parms.toString());
+				if(parms.get("action").equals("OpenUrl")){
+					output = cmd.OpenUrl(parms.get("url"));
+				}else if(parms.get("action").equals("simulateText")){
+					output = cmd.simulateText(parms.get("txt"));
+				}else if(parms.get("action").equals("cmd")){
+					output = cmd.exec(parms.get("cmd"));
+				}else if(parms.get("action").equals("Touch")){
+					int l = Integer.parseInt(parms.get("x")) * screen.get(0)/100;
+					int t = Integer.parseInt(parms.get("y")) * screen.get(1)/100;
+					output = cmd.simulateTouch(l,t);
+				}else if(parms.get("action").equals("Swap")){
+					int x = Integer.parseInt(parms.get("x")) * screen.get(0)/100;
+					int y = Integer.parseInt(parms.get("y")) * screen.get(1)/100;
+					int x2 = Integer.parseInt(parms.get("x2")) * screen.get(0)/100;
+					int y2 = Integer.parseInt(parms.get("y2")) * screen.get(1)/100;
+					output = cmd.simulateSwap(x,y,x2,y2);
+				}else if(parms.get("action").equals("button")){
+					int l = Integer.parseInt(parms.get("button"));
+					output = cmd.simulateKey(l);
+				}else if(parms.get("action").equals("shutdown")){
+					output = cmd.shutdown();
+				}else if(parms.get("action").equals("reboot")){
+					output = cmd.reboot();
+				}else if(parms.get("action").equals("CloseWifi")){
+					output = cmd.CloseWifi();
+				}else if(parms.get("action").equals("OpenWifi")){
+					output = cmd.OpenWifi();
+				}else if(parms.get("action").equals("Close3g")){
+					output = cmd.Close3g();
+				}else if(parms.get("action").equals("Open3g")){
+					output = cmd.Open3g();
+				}
+				Response ret = new Response(output);
+				ret.setMimeType("application/Json");
+				ret.addHeader("Cache-control", "no-cache");
+				ret.addHeader("Access-Control-Allow-Origin", "*");
+				return ret;
+			}else if(parms.get("mode").equals("shell")){
+				if(parms.get("action").equals("cmd")){
+					boolean isSU=false;
+					if(parms.containsKey("user") && parms.get("user").equals("su")){
+						isSU=true;
+					}
+					boolean isOut=false;
+					if(parms.containsKey("output") && parms.get("output").equals("1")){
+						isOut=true;
+					}
+					output = shell.runShell(parms.get("cmd"),isOut,isSU,parms.get("dir"));
+				}
+				Response ret = new Response(output);
+				ret.setMimeType("application/Json");
+				ret.addHeader("Cache-control", "no-cache");
+				ret.addHeader("Access-Control-Allow-Origin", "*");
+				return ret;
 			}else{
 				return new Response("<html><body><h1>当前模块不存在</h1></body></html>");
 			}

@@ -1,11 +1,11 @@
-//$(function(){
-    // Ö÷³ÌĞòÀà
+$(function(){
+    // ä¸»ç¨‹åºç±»
     var Air = function(config){
         window.TEMP = {};
         var _t=this;
         _t.Options={
             debug:!0,
-            ip:"192.168.0.0",
+            ip:"192.168.1.110",
             port:"7910",
             socketPort:"9999",
         
@@ -13,7 +13,7 @@
             version:"1.0",
             uploadPath:"sdcard/air",
             
-            heartBeatInterval:6000,
+            heartBeatInterval:10000,
             heartBeatFaultTimesMax:5,
             icon_width : 90,
             icon_height : 105,
@@ -50,7 +50,7 @@
         var init = _t.require("initAir").rander();
         
     };
-    // Ö÷³ÌĞò¶¯Ì¬·½·¨
+    // ä¸»ç¨‹åºåŠ¨æ€æ–¹æ³•
     Air.prototype={
         getMoudle:function(moudle){
             var _t=this;
@@ -77,9 +77,9 @@
             }
         }
     };
-    // Ö÷³ÌĞò¾²Ì¬·½·¨
+    // ä¸»ç¨‹åºé™æ€æ–¹æ³•
     Air.LOG=function(tag,msg){
         console.log(tag+"===>"+msg);
     };
     var air = new Air();
-//});
+});
