@@ -13,20 +13,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.CallLog;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.CommonDataKinds.StructuredName;
+import android.provider.ContactsContract.Contacts.Data;
 import android.provider.ContactsContract.PhoneLookup;
+import android.provider.ContactsContract.RawContacts;
 
 public class GetContactsJson {
     static Context mcontext;
-	private static List<Map<String, Object>> listems = new ArrayList<Map<String, Object>>();
-	private static List<Map<String, Object>> groups = new ArrayList<Map<String, Object>>();
+	private static List<Map<String, Object>> listems ;
+	private static List<Map<String, Object>> groups ;
 	
     public GetContactsJson(Context context) {
 		mcontext=context;
+		listems = new ArrayList<Map<String, Object>>();
+		groups = new ArrayList<Map<String, Object>>();
 		getPhoneContacts();
 		getContactsGroups();
     }
@@ -221,6 +229,29 @@ public class GetContactsJson {
     	//给组移除成员(groupId,personId):  
     	//getContentResolver().delete(ContactsContract.Data.CONTENT_URI,ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID + "=? and " +ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID + "=? and " +ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE + "=?",new String[]{"" + personId,"" + groupId,ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE});  
     }
+    public String addNewContact(String name,String phonenum){
+    	ContentValues values = new ContentValues();
+    	Uri rawContactUri = mcontext.getContentResolver().insert(RawContacts.CONTENT_URI, values);
+    	long rawContactId = ContentUris.parseId(rawContactUri);
+    	// 向data表插入姓名数据
+    	if (name != ""){
+	    	values.clear();
+	    	values.put(Data.RAW_CONTACT_ID, rawContactId);
+	    	values.put(Data.MIMETYPE, 
+	    	StructuredName.CONTENT_ITEM_TYPE);
+	    	values.put(StructuredName.GIVEN_NAME, name);
+	    	mcontext.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
+    	}
+    	if (phonenum != ""){
+	    	values.clear();
+	    	values.put(Data.RAW_CONTACT_ID, rawContactId);
+	    	values.put(Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE);
+	    	values.put(Phone.NUMBER, phonenum);
+	    	values.put(Phone.TYPE, Phone.TYPE_MOBILE);
+	    	mcontext.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, values);
+    	}
+    	return "{\"status\":\"ok\"}";
+    }
     /**
 	 * 获取某个分组下的 所有联系人信息
 	 * 思路：通过组的id 去查询 RAW_CONTACT_ID, 通过RAW_CONTACT_ID去查询联系人
@@ -248,34 +279,8 @@ public class GetContactsJson {
 String out="";
 
 		while (cursor.moveToNext()) {
-			// RAW_CONTACT_ID
 			int raw_contact_id = cursor.getInt(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID));
-
-			// Log.i("getAllContactsByGroupId", "raw_contact_id:" +
-			// raw_contact_id);
-
-
 			out+=String.valueOf(raw_contact_id);
-/*
-			Uri dataUri = Uri.parse("content://com.android.contacts/data");
-			Cursor dataCursor = mcontext.getContentResolver().query(dataUri,
-					null, "raw_contact_id=?",
-					new String[] { raw_contact_id + "" }, null);
-
-			while (dataCursor.moveToNext()) {
-				String data1 = dataCursor.getString(dataCursor
-						.getColumnIndex("data1"));
-				String mime = dataCursor.getString(dataCursor
-						.getColumnIndex("mimetype"));
-
-				if ("vnd.android.cursor.item/phone_v2".equals(mime)) {
-					out+=data1;
-				} else if ("vnd.android.cursor.item/name".equals(mime)) {
-					out+=data1;
-				}
-			}
-
-			dataCursor.close();*/
 			out+="-";
 		}
 

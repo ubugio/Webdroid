@@ -113,11 +113,27 @@ TEMP['Templete'] = function(air){
                                     '<div class="popup-button-cancel">{text_cancel}</div>'+
                                 '</div>'+
                             '</div>',
-        initSystemTemplate:'<div>'+
-                                '<p class="input-mes">{text_initSystemDesc}</p>'+
-                                '<div><span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemIp}</span><input type="text" class="input-ip" value="{IP}" /><br />'+
-                                '<span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemPort}</span><input type="text" class="input-port" value="{PORT}" /><br />'+
-                                '<span style="display: inline-block;width: 125px;text-align: right;">{text_initSystemSocketPort}</span><input type="text" class="input-socketPort" value="{SOCKET}" /><br /></div>'+
+        initSystemTemplate:'<div class="input-contain">'+
+                                '<div class="input-panel">'+
+                                    '<p class="input-tip">输入手机上的id号</p>'+
+                                    '<input type="text" class="input-id" />'+
+                                    '<button>进入</button>'+
+                                '</div>'+
+                                '<div class="input-img">'+
+                                    '<p class="input-tip">打开app扫描二维码</p>'+
+                                    '<div class="input-img-div">'+
+                                        '<img style="width: 120px;" src="" />'+
+                                        '<div class="input-qr-tip" style="display:none;"></div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="input-result">'+
+                                '{text_initSystemIp}<input type="text" class="input-ip" value="{IP}" />:<input type="text" class="input-port" value="{PORT}" />/<input type="text" class="input-socketPort" value="{SOCKET}" />'+
+                            '</div>'+
+                            '<div class="input-ext">'+
+                                '<div class="input-info">'+
+                                    '<p>{text_initSystemDesc}</p>'+
+                                '</div>'+
                             '</div>',
         callingTemplate:'<div class="phone-panel">'+
                             '<img src="{HEAD}" />'+

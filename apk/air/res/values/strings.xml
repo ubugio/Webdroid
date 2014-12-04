@@ -12,5 +12,16 @@
     <string name="title_activity_open_nano_server">服务状态</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_camera">CameraActivity</string>
+    <string name="title_activity_qr">二维码扫描</string>
+    <string name="qr_scanner">扫码连接</string>
+    <string name="enter">直接输入</string>
+    <string name="ok">确定提交</string>
+    <string name="input_steps">请在浏览器端输入。。。。。。。。。。。。。</string>
+    <string name="title_activity_status">运行状态</string>
+    <string name="title_activity_input_steps">输入步骤</string>
+    <string name="total_status">total_status</string>
+    <string name="app_status">app_status</string>
+    <string name="browser_status">browser_status</string>
+    <string name="link_status">link_status</string>
 
 </resources>

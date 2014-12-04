@@ -1,5 +1,6 @@
 <div class="window-sms">
     <div class="window-sms-title">
+        <div class="window-sms-new">{text_new}</div>
         <input type="text" placeholder="搜索" />
     </div>
     <div class="window-sms-container">
@@ -9,13 +10,17 @@
             </ul>
         </div>
         <div class="window-sms-list">
-            <div class="window-sms-contact">
-                <div class="window-sms-contact-head">
-                    <img src="" />
-                </div>
+            <div class="window-sms-contact window-sms-contact-dialog">
                 <div class="window-sms-contact-mes">
-                <p class="window-sms-contact-name"></p><p class="window-sms-contact-number"></p>
+                   <p>
+                    <span class="window-sms-contact-name"></span>
+                    (<span class="window-sms-contact-number"></span>)
+                   </p>
                 </div>
+            </div>
+            <div class="window-sms-contact window-sms-contact-new">
+                <div class="window-sms-contact-newResiver">{text_sendto}</div>
+                <input class="window-sms-contact-new-input" type="text" />
             </div>
             <ul class="window-sms-list-scroll">
                 <li class="window-sms-list-more">{text_more}</li>

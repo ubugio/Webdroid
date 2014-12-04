@@ -1,6 +1,5 @@
 TEMP['SmsPhone'] = function(air){
-//TODO
-// 电话接听，挂断和短信挂断服务器交互
+// TODO: 电话接听，挂断和短信挂断服务器交互
 //------------------------短信状态
 var addNum=function(num){
     if($("#icon-sms .num").length>0){
@@ -19,7 +18,7 @@ $("#icon-sms").dblclick(function(){
 var smsReceiver=function(data){
     console.log("new message");
     if($(".window-sms-list").length>0 && $(".window-sms-list").data("address")==data.sender){
-        var src='<img src="'+$(".window-sms-contact-head img").attr("src")+'"/>';
+        var src='<img src="'+$(".window-sms-list img").attr("src")+'"/>';
         var out=$('<li class="sms-mes-1">'+src+'<div>'+data.content+'<span>'+new Date(parseInt(data.sendtime)).toLocaleString()+'</span></div></li>');
         $(".window-sms-list-scroll").append(out);
         var div = $(".window-sms-list-scroll")[0];
@@ -28,14 +27,228 @@ var smsReceiver=function(data){
         $(".window-sms-group-list li[data-number='"+data.sender+"']").addClass("new").click(function(){
             $(this).removeClass("new");
         });
-        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"<br />"+new Date(parseInt(data.sendtime)).toLocaleString());
+        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString());
     }else{
         addNum(1);
-        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"<br />"+new Date(parseInt(data.sendtime)).toLocaleString());
+        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString());
     }
     //alert(data.sender+"\n"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleDateString());
 };
-
+//---------------------------短信窗口控制
+    var loading = null;
+    var defaultlimit=20;
+    var offfsetNow=0;
+    var threadidNow="";
+    var downloading=false;
+    var SmsWindow = null;
+    
+    var smsTo = function(num){
+        if(SmsWindow==null)
+            openSmsWindow(function(){smsToHandle(num);});
+        else
+            smsToHandle(num);
+    };
+    var newSms = function(){
+        if(SmsWindow==null)
+            openSmsWindow(function(){
+                newSmsHandle();
+            });
+        else
+            newSmsHandle();
+    };
+    var newSmsHandle = function(){
+        SmsWindow.find(".window-sms-new").click();
+    };
+    var smsToHandle = function(num){
+       var flag = !1;
+       SmsWindow.find("ul:eq(0) li").each(function(){
+           if(($(this).data("number")+"").indexOf(num)!=-1){
+               $(this).click();
+               flag = !0;
+           }
+       });
+        if(!flag){
+            SmsWindow.find(".window-sms-new").click();
+            SmsWindow.find(".window-sms-contact-new-input").val(num);
+        }
+    };
+    
+    var openSmsWindow = function(func){
+        SmsWindow = air.require("UI").openWindow({
+            title:air.Lang.icon_name_sms,
+            iconSrc:air.Options.iconPath+"messages_80.png",
+            id:"sms_panel",
+            onClose:function(){
+                SmsWindow=null;
+            },
+            handles:false
+        });
+        // 初始化，获取分组并绑定事件
+        loading = air.require("util").setLoading(SmsWindow);
+        air.require("dataTran").getJson(
+            {mode:"device","action":"sms_groups"},
+            function(data){
+                var json = data.sms;
+                var sms_groups="";
+                for(k in json){
+                    var src='<img src="'+air.Options.imagePath+'default_contact.png" />';
+                    if(parseInt(json[k].photoid)>0)
+                        src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].photoid+'" src=""/>';
+                        if(json[k].name=="")json[k].name=json[k].strAddress;
+                    sms_groups+='<li data-number="'+json[k].strAddress+'" data-name="'+json[k].name+'" data-threadid="'+json[k].thread_id+'">'+src+'<div><span class="name">'+json[k].name+"("+json[k].count+')</span><span class="body">'+json[k].strbody+'</span></div></li>';
+                }
+                var o={
+                    text_sendto:air.Lang.text_sendto,
+                    text_new:air.Lang.text_new,
+                    text_more:air.Lang.text_more,
+                    sms_groups:sms_groups,
+                    text_send:air.Lang.text_send
+                };
+                air.require("Templete").getTemplate("window-sms",function(temp){
+                    air.require("initAir").setStyle(air.Options.themePath+"window-sms.css","window-sms");
+                    SmsWindow.setContent(air.require("UI").substitute(temp,o));
+                    var test = setInterval(function(){//等待style到位
+                        if($(".window-sms-group ul li img").width()=="50"){
+                            clearInterval(test);
+                            air.require("myLazyLoad").lazyLoad(SmsWindow.find(".window-sms-group"),"img","src","src");
+                        }
+                    },1);
+                    loading.remove();
+                    SmsWindow.delegate("ul:eq(1) li","click",function(){
+                        SmsWindow.find("ul:eq(1) li").removeClass("select");
+                        $(this).addClass("select");
+                    });
+                    SmsWindow.find(".window-sms-list-scroll li:first").click(function(){
+                        insert(threadidNow);
+                    });
+                    // 绑定分组点击时间
+                    SmsWindow.delegate("ul:eq(0) li","click",function(){
+                        if($(this).hasClass("select"))return false;
+                        SmsWindow.find("ul:eq(0) li").removeClass("select");
+                        $(this).addClass("select");
+                        var temp = $(this).data("threadid");
+                        if(threadidNow!=temp){
+                            threadidNow = temp;
+                            offfsetNow=0;
+                            SmsWindow.find(".window-sms-list-scroll li").not(":first").remove();
+                        }
+                        if(temp!="-1"){
+                            insert();
+                            SmsWindow.find(".window-sms-list").data("address",$(this).data("number"));
+                            SmsWindow.find(".window-sms-contact-name").text($(this).data("name"));
+                            SmsWindow.find(".window-sms-contact-number").text($(this).data("number"));
+                        }
+                    });
+                    //绑定短信文本框的计数功能
+                    SmsWindow.find(".window-sms-send textarea").keyup(function(){
+                        SmsWindow.find(".window-sms-send span").text(CountSmsCharacters($(this).val()));
+                    });
+                    // 绑定发送功能
+                    SmsWindow.find(".window-sms-send button").click(function(){
+                        var text = SmsWindow.find(".window-sms-send textarea").val();
+                        if(text=="")return false;
+                        var number = SmsWindow.find(".window-sms-contact-number").text();
+                        if(SmsWindow.find(".window-sms-contact-new").is(":visible")){
+                            number = SmsWindow.find(".window-sms-contact-new-input").val();
+                            console.log(SmsWindow.find(".window-sms-contact-new").is(":visible"));
+                        }
+                        send(number,text);
+                    });
+                    //新建短信
+                    SmsWindow.find(".window-sms-new").click(function(){
+                        if(SmsWindow.find("ul:eq(0) li:first").data("threadid")=="-1"){
+                            SmsWindow.find("ul:eq(0) li:first").click();
+                            return false;
+                        }
+                        var s = $('<li data-number="" data-name="" data-threadid="-1"><img src="'+air.Options.imagePath+'default_contact.png" /><div><span class="name">新建</span><span class="body"></span></div></li>');
+                        SmsWindow.find("ul:eq(0)").prepend(s);
+                        s.click(function(){
+                            SmsWindow.find(".window-sms-list-scroll li:first").hide();
+                            SmsWindow.find(".window-sms-list-scroll li").not(":first").remove();
+                            SmsWindow.find(".window-sms-contact-dialog").hide();
+                            SmsWindow.find(".window-sms-contact-new").css("display","block");
+                        }).click();
+                        $(".window-sms-contact-new-input").val("").focus();
+                    });
+                    //新建短信
+                    if(func){
+                        func();
+                    }else{
+                        //自动点击第一个会话
+                        SmsWindow.find("ul:eq(0) li:first").click();
+                    }
+                });
+            },function(e,t){
+                loading.remove();
+                console.log(e);
+                SmsWindow.setContent("加载失败..."+t);
+            },function(){
+                downloading=false;
+            }
+        );
+    };
+    
+    // 获取信息列表插入
+    var insert = function(){
+        if(downloading)return false;
+        downloading=true;
+        loading = air.require("util").setLoading(SmsWindow);
+        SmsWindow.find(".window-sms-list-scroll li:first").show();
+        SmsWindow.find(".window-sms-contact-dialog").show();
+        SmsWindow.find(".window-sms-contact-new").hide();
+        air.require("dataTran").getJson(
+            {mode:"device","action":"sms","threadid":threadidNow,"limit":defaultlimit,"offset":offfsetNow},
+            function(data){
+                offfsetNow+=defaultlimit;
+                var json = data.sms;
+                if(json){
+                    var out="";
+                    var head = SmsWindow.find("ul:eq(0) li.select").find("img").attr("src");
+                    for(var k=json.length-1;k>=0;k--){
+                        var src="",status="";
+                        if(json[k].type=="1")
+                            src='<img src="'+head+'"/>';
+                        else
+                            status = '<span class="sms-mes-status">'+air.Lang.sms_status_received+'</span>';
+                        out+='<li class="sms-mes-'+json[k].type+'">'+src+'<div>'+json[k].strbody+'<span>'+new Date(parseInt(json[k].strDate)).toLocaleString()+'</span></div>'+status+'</li>';
+                    }
+                    out = $(out);
+                    SmsWindow.find(".window-sms-list-scroll li:first").after(out);
+                    SmsWindow.find(".window-sms-list-scroll").scrollTop(out.last().offset().top);
+                }
+            },function(e,t){
+                console.log(e);
+                SmsWindow.setContent("加载失败..."+t);
+            },function(){
+                loading.remove();
+                downloading=false;
+            }
+        );
+    };
+    // 发送短信息
+    var send = function(number,text){
+        loading = air.require("util").setLoading(SmsWindow.find(".window-sms-send"));
+        var id = new Date();
+        air.require("dataTran").getJson(
+            {mode:"device","action":"sendsms","number":number,"text":text,"id":"sms-"+id.getTime()},
+            function(data){
+                if(data.status=="ok"){
+                    air.require("notify").toast(air.Lang.text_sms+":"+air.Lang.text_sms_success);
+                    SmsWindow.find(".window-sms-send textarea").val("");
+                    var out = $('<li id="sms-'+id.getTime()+'" class="sms-mes-2"><div>'+text+'<span>'+id.toLocaleString()+'</span></div><span class="sms-mes-status"></span></li>');
+                    SmsWindow.find(".window-sms-list-scroll").append(out);
+                    var div = SmsWindow.find(".window-sms-list-scroll")[0];
+                    div.scrollTop = div.scrollHeight;
+                }
+            },
+            function(){
+                    air.require("notify").alertNotify(air.Lang.text_sms,air.Lang.text_sms_fail);
+            },
+            function(){
+                loading.remove();
+            }
+        );
+    };
 //---------------------------电话状态
     var callingWindow=null;
     var currentStatus=0,status=["normal","calling","ringing"];
@@ -167,16 +380,16 @@ var smsReceiver=function(data){
             //接听
             timeCounting();destoryShake();
             callingWindow.find(".phone-answer").slideUp();
-            // TODO---
+            // TODO---接听
         });
         callingWindow.find(".phone-reject").click(function(){
             //挂断
             callingDown(air.Lang.incoming_call_has_been_rejected);
-            // TODO---
+            // TODO---挂断
         });
         callingWindow.find(".phone-reject-message").click(function(){
             //用短信挂断
-            // TODO---
+            // TODO---用短信挂断
         });
     };
     //通话窗口计时器
@@ -232,7 +445,6 @@ var smsReceiver=function(data){
         });
         DialPanel.find(".dial-panel-call").click(function(){
             var num = DialPanel.find(".dial-panel-input").val();
-            // TODO---拨打电话
             air.require("dataTran").getJson({mode:"device","action":"call","num":num},function(data){
                 if(data.status=="ok"){
                     console.log("callTo:"+num);
@@ -245,15 +457,17 @@ var smsReceiver=function(data){
         });
         DialPanel.find(".dial-panel-message").click(function(){
             // 发送短信
-            console.log("smsTo:"+DialPanel.find(".dial-panel-input").val());
-            // TODO---
+            smsTo(DialPanel.find(".dial-panel-input").val());
         });
     };
 //---------------------------------
     return {
         smsReceiver:smsReceiver,
+        openSmsWindow:openSmsWindow,
         phoneReceiver:phoneReceiver,
         showDialPanel:showDialPanel,
         callNum:showDialPanel,
+        smsTo:smsTo,
+        newSms:newSms
     };
 };

@@ -125,6 +125,7 @@ height: 60px;
 }
 table {
 border: 1px solid;
+    width: auto;
 }
 table th {
   font-weight: bold;

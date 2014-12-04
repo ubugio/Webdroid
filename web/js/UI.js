@@ -137,6 +137,22 @@ TEMP['UI'] = function(air){
         });
         windows[option.id].jqDrag(windows[option.id].find(".window_title.titleText"));
         windowContainer.append(windows[option.id]);
+        setTimeout(function(){
+            windows[option.id].addClass("on");
+        },0);// 技巧：等待内容更新完毕后执行
+        /*
+        t.find(".popup-close").click(function(){
+            t.find(".popup").addClass("off");
+            setTimeout(function(){
+                t.remove();
+                func2 && func2();
+            },500);
+        });
+        t.find(".btn-ok").click(function(){
+            func && func();
+            t.remove();
+        });
+        $("body").append(t);*/
         return windows[option.id];
     };
     var PublicNewTab=function(config){
@@ -168,7 +184,8 @@ TEMP['UI'] = function(air){
             if(!fixZindex)tar.css("z-index",window_z_index++);
         });
         tar.find(".window_close").click(function(){
-            tar.fadeOut(function(){
+            tar.addClass("off");
+            setTimeout(function(){
                 if(tabs[id])
                     tabs[id].remove();
                 tar.remove();
@@ -176,23 +193,24 @@ TEMP['UI'] = function(air){
                 if(tabs[id])
                     delete tabs[id];
                 onClose && onClose();
-            });
+            },400);
         });
         tar.find(".window_min").click(function(){
-            tar.slideUp(function(){
-                if(tabs[id])tabs[id].addClass("hidden");
-                onMin && onMin();
-            });
+            tar.addClass("min");
+            setTimeout(function(){windows[id].hide()},300);
+            if(tabs[id])tabs[id].addClass("hidden");
+            onMin && onMin();
         });
     };
     //绑定任务栏事件
     var tabBind = function(tar,id){
         tar.click(function(){
             if($(this).hasClass("hidden")){
-                windows[id].slideDown();
+                windows[id].show().removeClass("min");
                 $(this).removeClass("hidden");
             }else{
-                windows[id].slideUp();
+                windows[id].addClass("min");
+                setTimeout(function(){windows[id].hide()},300);
                 $(this).addClass("hidden");
             }
         });

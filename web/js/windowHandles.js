@@ -1,32 +1,9 @@
 TEMP['windowHandles'] = function(air){
-    var mformat = function(value){
-        if(null==value||value=='')
-        return "-";
-        var unitArr = ["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"];
-        var index=0;
-
-        var srcsize = parseFloat(value); 
-        var size =srcsize/Math.pow(1024,(index=Math.floor(Math.log(srcsize)/Math.log(1024)))); 
-        return (Math.round(size*100)/100)+unitArr[index];
-    };
-    var msformat = function(value){
-        var ms = parseInt(value%1000/10);
-        ms=ms<10?"0"+ms:ms;
-        value=parseInt(value/1000);
-        var s = value%60;
-        var m = (value-s)/60;
-        m=m<10?"0"+m:m;
-        s=s<10?"0"+s:s;
-        return m+":"+s+"."+ms;
-    };
-    var sformat = function(value){
-        value=parseInt(value);
-        var s = value%60;
-        var m = (value-s)/60;
-        m=m<10?"0"+m:m;
-        s=s<10?"0"+s:s;
-        return m+":"+s;
-    };
+    var mformat = air.require("util").mformat;
+    var msformat = air.require("util").msformat;
+    var sformat = air.require("util").sformat;
+    var setLoading = air.require("util").setLoading;
+    
     var tformat = function(value,type,k){
         if(null==value||value=='')
             return "-";
@@ -67,11 +44,6 @@ TEMP['windowHandles'] = function(air){
         return (sTotal+eTotal)+"/"+should;
     }
 
-    var setLoading = function(tar){
-        var l = $('<div class="loading"></div>');
-        tar.append(l);
-        return l;
-    };
 
     var handles={
         setLoading:setLoading,
@@ -119,7 +91,7 @@ TEMP['windowHandles'] = function(air){
                         info_IMEI:json.info.IMEI,
                         info_ProvidersName:json.info.ProvidersName,
                         info_NativePhoneNumber:json.info.NativePhoneNumber,
-                        info_clipboard:json.info.clipboard,
+                        info_clipboard:JSON.parse('{"t":"'+json.info.clipboard+'"}').t,
                         num_contact:json.num.contacts,
                         num_sms:json.num.sms,
                         num_app:json.num.app,
@@ -182,8 +154,8 @@ TEMP['windowHandles'] = function(air){
                             //out+='<img src="'+json[k].head+'">'+json[k].name;
                             var src='<span>'+json[k].name[0]+'</span>';
                             if(json[k].head>0)
-                                src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].head+'"/>';
-                            out+=src+'<div>'+json[k].name+"</div>";
+                                src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].head+'" src=""/>';
+                            out+=src+'<div class="window-contacts-desc"><p class="window-contacts-name">'+json[k].name+"</p><p>"+json[k].desc.replace(/\s/g,"")+"</p></div>";
                         out+='</li>';
                     }
                     out+="</ul>";
@@ -200,6 +172,7 @@ TEMP['windowHandles'] = function(air){
                     air.require("Templete").getTemplate("window-contacts",function(temp){
                         air.require("initAir").setStyle(air.Options.themePath+"window-contacts.css","window-contacts");
                         tar.setContent(air.require("UI").substitute(temp,o));
+                        air.require("myLazyLoad").lazyLoad(tar.find(".window-contacts-list"),"img","src","src");
                         tar.find("ul:eq(1) li").click(function(){
                             tar.find("ul:eq(1) li").removeClass("select");
                             $(this).addClass("select");
@@ -246,6 +219,24 @@ TEMP['windowHandles'] = function(air){
                         tar.delegate(".window-contact-detail-call","click",function(){
                             air.require("SmsPhone").callNum($(this).parent().parent().find(".phone").text().replace(/\s/g,""));
                         });
+                        tar.delegate(".window-contact-detail-chat","click",function(){
+                            air.require("SmsPhone").smsTo($(this).parent().parent().find(".phone").text().replace(/\s/g,""));
+                        });
+                        air.require("search").onSearch({
+                            inputBox:$(".window-contacts-title input"),
+                            container:$(".window-contacts ul:eq(1)"),
+                            item:"li",
+                            text:['.window-contacts-desc p:first','.window-contacts-desc p:last'],
+                            before:function(){
+                                $(".window-contacts-list ul .li-result").remove();
+                            },
+                            ifempty:function(){
+                                $(".window-contacts-list ul").append('<li class="li-result">无结果</li>');
+                            },
+                            after:function(){
+                                $(".window-contacts-list").scroll();
+                            }
+                        });
                     });
                 },function(e,t){
                     console.log(e);
@@ -268,7 +259,7 @@ TEMP['windowHandles'] = function(air){
                     var out="";
                     for(k in json){
                         out+='<li data-package="'+json[k].packageName+'">';
-                            var src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&package='+json[k].packageName+'"/>';
+                            var src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&package='+json[k].packageName+'" src=""/>';
                             out+=src+'<div><span class="name">'+json[k].name+'</span><span class="version">'+json[k].versionName+'</span><span class="installT">'+json[k].firstInstallTime+'</span><span class="size">'+mformat(json[k].size)+"</span></div>";
                         out+='</li>';
                     }
@@ -284,6 +275,12 @@ TEMP['windowHandles'] = function(air){
                     air.require("Templete").getTemplate("window-apps",function(temp){
                         air.require("initAir").setStyle(air.Options.themePath+"window-apps.css","window-apps");
                         tar.setContent(air.require("UI").substitute(temp,o));
+                        var test = setInterval(function(){//等待style到位
+                            if($(".window-apps-list img:first").width()=="53"){
+                                clearInterval(test);
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-apps-list-scroll"),"img","src","src");
+                            }
+                        },1);
                         tar.find("ul:eq(0) li").click(function(){
                             tar.find("ul:eq(0) li").removeClass("select");
                             $(this).addClass("select");
@@ -315,6 +312,21 @@ TEMP['windowHandles'] = function(air){
                             tar.find("ul:eq(2) li").removeClass("select");
                             $(this).addClass("select");
                         });
+                        air.require("search").onSearch({
+                            inputBox:$(".window-apps-title input"),
+                            container:$(".window-apps ul:eq(2)"),
+                            item:"li",
+                            text:'.name',
+                            before:function(){
+                                $(".window-apps-list-scroll .li-result").remove();
+                            },
+                            ifempty:function(){
+                                $(".window-apps-list-scroll").append('<li class="li-result">无结果</li>');
+                            },
+                            after:function(){
+                                $(".window-apps-list-scroll").scroll();
+                            }
+                        });
                     });
                 },function(e,t){
                     console.log(e);
@@ -341,11 +353,11 @@ TEMP['windowHandles'] = function(air){
                             out+='<li class="'+json[k].type+'" data-type="'+json[k].type_ext+'" data-link="'+json[k].link+'">';
                                 var src='<img src="'+air.Options.imagePath+'fm_icon_'+json[k].type_ext+'.png'+'"/>';
                                 if(json[k].type_ext=="image")
-                                    src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=49&path='+json[k].link+'" />';
+                                    src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=49&path='+json[k].link+'" src="" />';
                                 if(json[k].type_ext=="video")
-                                    src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=49&path='+json[k].link+'" />';
+                                    src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=49&path='+json[k].link+'" src="" />';
                                 if(json[k].type_ext=="apk")
-                                    src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&packagepath='+json[k].link+'" />';
+                                    src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&packagepath='+json[k].link+'" src="" />';
                                 out+=src+'<div><span class="name">'+json[k].name+'</span><span class="lastModified">'+json[k].lastModified+'</span><span class="size">'+mformat(json[k].size)+"</span><span class='size'>"+air.Lang["file_"+json[k].type_ext]+"</span></div>";
                             out+='</li>';
                         }
@@ -381,6 +393,12 @@ TEMP['windowHandles'] = function(air){
             air.require("Templete").getTemplate("window-files",function(temp){
                 air.require("initAir").setStyle(air.Options.themePath+"window-files.css","window-files");
                 tar.setContent(air.require("UI").substitute(temp,o));
+                var test = setInterval(function(){//等待style到位
+                    if($(".window-files-list").width()=="590"){
+                        clearInterval(test);
+                        air.require("myLazyLoad").lazyLoad(tar.find(".window-files-list-scroll"),"img","src","src");
+                    }
+                },1);
                 var l=null;
                 air.require("pathTree").pathTree({
                     tar:tar.find(".window-files-group"),
@@ -533,7 +551,7 @@ TEMP['windowHandles'] = function(air){
                         out+='<li data-type="'+json[k].type+'">';
                             var src='<img src="'+air.Options.imagePath+'default_contact.png"/>';
                             if(parseInt(json[k].photoid)>0)
-                                src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].photoid+'"/>';
+                                src='<img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].photoid+'" src=""/>';
                             json[k].name=json[k].name?json[k].name:json[k].number;
                             var duration = tformat(json[k].duration,json[k].type);
                             var typePlus=duration=="未接通"?" fail":"";
@@ -554,6 +572,12 @@ TEMP['windowHandles'] = function(air){
                     air.require("Templete").getTemplate("window-phones",function(temp){
                         air.require("initAir").setStyle(air.Options.themePath+"window-phones.css","window-phones");
                         tar.setContent(air.require("UI").substitute(temp,o));
+                        var test = setInterval(function(){//等待style到位
+                            if($(".window-phones-list img").width()=="25"){
+                                clearInterval(test);
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-phones-list-scroll"),"img","src","src");
+                            }
+                        },1);
                         tar.find("ul:eq(2) li").click(function(){
                             tar.find("ul:eq(2) li").removeClass("select");
                             $(this).addClass("select");
@@ -571,6 +595,9 @@ TEMP['windowHandles'] = function(air){
                         });
                         tar.delegate(".call","click",function(){
                             air.require("SmsPhone").callNum($(this).parent().parent().find(".version").text().replace(/\s/g,""));
+                        });
+                        tar.delegate(".message","click",function(){
+                            air.require("SmsPhone").smsTo($(this).parent().parent().find(".version").text().replace(/\s/g,""));
                         });
                     });
                 },function(e,t){
@@ -666,9 +693,10 @@ TEMP['windowHandles'] = function(air){
                         console.log(json);
                         var out="";
                         for(k in json){
-                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img onerror="this.src=\'ggg\'" src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=110&id='+json[k].id+'" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
+                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img src="" data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=110&id='+json[k].id+'" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
                         }
                         tar.find(".window-images-list-scroll li:last").before(out);
+                        tar.find(".window-images-list-scroll").scroll();
                     },function(e,t){
                         console.log(e);
                         tar.setContent("加载失败..."+t);
@@ -684,7 +712,7 @@ TEMP['windowHandles'] = function(air){
                     var json = data.images;
                     var images_groups="";
                     for(k in json){
-                        images_groups+='<li data-name="'+json[k].bucket+'"><img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=80&id='+json[k].first+'" /><div><span class="name">'+json[k].bucket+'</span><span class="lastModified">'+json[k].num+'</span></div></li>';
+                        images_groups+='<li data-name="'+json[k].bucket+'"><img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=imagepreview&width=80&id='+json[k].first+'" src="" /><div><span class="name">'+json[k].bucket+'</span><span class="lastModified">'+json[k].num+'</span></div></li>';
                     }
                     var o={
                         text_more:air.Lang.text_more,
@@ -698,6 +726,13 @@ TEMP['windowHandles'] = function(air){
                     air.require("Templete").getTemplate("window-images",function(temp){
                         air.require("initAir").setStyle(air.Options.themePath+"window-images.css","window-images");
                         tar.setContent(air.require("UI").substitute(temp,o));
+                        var test = setInterval(function(){//等待style到位
+                            if($(".window-images-group ul li img").width()=="80"){
+                                clearInterval(test);
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-images-group"),"img","src","src");
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-images-list-scroll"),"img","src","src");
+                            }
+                        },1);
                         tar.delegate("ul:eq(1) li","click",function(){
                             tar.find("ul:eq(1) li").removeClass("select");
                             $(this).addClass("select");
@@ -755,9 +790,10 @@ TEMP['windowHandles'] = function(air){
                         console.log(json);
                         var out="";
                         for(k in json){
-                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=110&id='+json[k].id+'" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
+                            out+='<li title="'+json[k].name+'" data-tokentime="'+new Date(parseInt(json[k].tdate)).toLocaleString()+'" data-modifytime="'+new Date(parseInt(json[k].date)*1000).toLocaleString()+'" data-id="'+json[k].id+'"><img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=110&id='+json[k].id+'" src="" /><div><span class="big">'+json[k].width+' x '+json[k].height+'</span><br /><span class="size">'+mformat(json[k].size)+'</span></div></li>';
                         }
                         tar.find(".window-videos-list-scroll li:last").before(out);
+                        tar.find(".window-videos-list-scroll").scroll();
                     },function(e,t){
                         console.log(e);
                         tar.setContent("加载失败..."+t);
@@ -773,7 +809,7 @@ TEMP['windowHandles'] = function(air){
                     var json = data.videos;
                     var videos_groups="";
                     for(k in json){
-                        videos_groups+='<li data-name="'+json[k].bucket+'"><img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=80&id='+json[k].first+'" /><div><span class="name">'+json[k].bucket+'</span><span class="lastModified">'+json[k].num+'</span></div></li>';
+                        videos_groups+='<li data-name="'+json[k].bucket+'"><img data-src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=stream&action=videopreview&width=80&id='+json[k].first+'" src="" /><div><span class="name">'+json[k].bucket+'</span><span class="lastModified">'+json[k].num+'</span></div></li>';
                     }
                     var o={
                         text_more:air.Lang.text_more,
@@ -787,7 +823,14 @@ TEMP['windowHandles'] = function(air){
                     air.require("Templete").getTemplate("window-videos",function(temp){
                         air.require("initAir").setStyle(air.Options.themePath+"window-videos.css","window-videos");
                         tar.setContent(air.require("UI").substitute(temp,o));
-                    loading.remove();
+                        var test = setInterval(function(){//等待style到位
+                            if($(".window-videos-list img").width()=="120"){
+                                clearInterval(test);
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-videos-group"),"img","src","src");
+                                air.require("myLazyLoad").lazyLoad(tar.find(".window-videos-list-scroll"),"img","src","src");
+                            }
+                        },1);
+                        loading.remove();
                         tar.delegate("ul:eq(1) li","click",function(){
                             tar.find("ul:eq(1) li").removeClass("select");
                             $(this).addClass("select");
@@ -809,132 +852,6 @@ TEMP['windowHandles'] = function(air){
                         tar.delegate("ul:eq(1) li","dblclick",function(){
                             air.require("player").playVideofromId($(this).data("id"));
                         });
-                    });
-                },function(e,t){
-                    loading.remove();
-                    console.log(e);
-                    tar.setContent("加载失败..."+t);
-                },function(){
-                    downloading=false;
-                }
-            );
-        },
-        ///////////////////////////////////TODO 根据ad 返回number的id 然后 
-        //自动点击对应条目滚动到最低端 或者 直接插入到对应位置(当前窗口)
-        "sms":function(tar){
-            var loading = setLoading(tar);
-            var defaultlimit=20;
-            var offfsetNow=0;
-            var threadidNow="";
-            var downloading=false;
-            var insert = function(threadid){
-                if(downloading)return false;
-                downloading=true;
-                loading = setLoading(tar);
-                if(threadidNow!=threadid){
-                    offfsetNow=0;
-                    tar.find(".window-sms-list-scroll li").not(":first").remove();
-                    threadidNow=threadid;
-                }
-                air.require("dataTran").getJson(
-                    {mode:"device","action":"sms","threadid":threadidNow,"limit":defaultlimit,"offset":offfsetNow},
-                    function(data){
-                        offfsetNow+=defaultlimit;
-                        var json = data.sms;
-                        if(json){
-                            var out="";
-                            var head = tar.find("ul:eq(0) li.select").find("img").attr("src");
-                            for(var k=json.length-1;k>=0;k--){
-                                var src="",status="";
-                                if(json[k].type=="1")
-                                    src='<img src="'+head+'"/>';
-                                else
-                                    status = '<span class="sms-mes-status">'+air.Lang.sms_status_received+'</span>';
-                                out+='<li class="sms-mes-'+json[k].type+'">'+src+'<div>'+json[k].strbody+'<span>'+new Date(parseInt(json[k].strDate)).toLocaleString()+'</span></div>'+status+'</li>';
-                            }
-                            out = $(out);
-                            tar.find(".window-sms-list-scroll li:first").after(out);
-                            tar.find(".window-sms-list-scroll").scrollTop(out.last().offset().top);
-                        }
-                    },function(e,t){
-                        console.log(e);
-                        tar.setContent("加载失败..."+t);
-                    },function(){
-                        loading.remove();
-                        downloading=false;
-                    }
-                );
-            };
-            var send = function(number,text){
-                loading = setLoading(tar.find(".window-sms-send"));
-                var id = new Date();
-                air.require("dataTran").getJson(
-                    {mode:"device","action":"sendsms","number":number,"text":text,"id":"sms-"+id.getTime()},
-                    function(data){
-                        if(data.status=="ok"){
-                            air.require("notify").toast(air.Lang.text_sms+":"+air.Lang.text_sms_success);
-                            tar.find(".window-sms-send textarea").val("");
-                            var out = $('<li id="sms-'+id.getTime()+'" class="sms-mes-2"><div>'+text+'<span>'+id.toLocaleString()+'</span></div><span class="sms-mes-status"></span></li>');
-                            tar.find(".window-sms-list-scroll").append(out);
-                            var div = tar.find(".window-sms-list-scroll")[0];
-                            div.scrollTop = div.scrollHeight;
-                        }
-                    },
-                    function(){
-                            air.require("notify").alertNotify(air.Lang.text_sms,air.Lang.text_sms_fail);
-                    },
-                    function(){
-                        loading.remove();
-                    }
-                );
-            };
-            air.require("dataTran").getJson(
-                {mode:"device","action":"sms_groups"},
-                function(data){
-                    var json = data.sms;
-                    var sms_groups="";
-                    for(k in json){
-                        var src='<img src="'+air.Options.imagePath+'default_contact.png" />';
-                        if(parseInt(json[k].photoid)>0)
-                            src='<img src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&phoneid='+json[k].photoid+'"/>';
-                            if(json[k].name=="")json[k].name=json[k].strAddress;
-                        sms_groups+='<li data-number="'+json[k].strAddress+'" data-name="'+json[k].name+'" data-threadid="'+json[k].thread_id+'">'+src+'<div><span class="name">'+json[k].name+"("+json[k].count+')</span><span class="body">'+json[k].strbody+'</span></div></li>';
-                    }
-                    var o={
-                        text_more:air.Lang.text_more,
-                        sms_groups:sms_groups,
-                        text_send:air.Lang.text_send
-                    };
-                    air.require("Templete").getTemplate("window-sms",function(temp){
-                        air.require("initAir").setStyle(air.Options.themePath+"window-sms.css","window-sms");
-                        tar.setContent(air.require("UI").substitute(temp,o));
-                        loading.remove();
-                        tar.delegate("ul:eq(1) li","click",function(){
-                            tar.find("ul:eq(1) li").removeClass("select");
-                            $(this).addClass("select");
-                        });
-                        tar.find(".window-sms-list-scroll li:first").click(function(){
-                            insert(threadidNow);
-                        });
-                        tar.delegate("ul:eq(0) li","click",function(){
-                            tar.find("ul:eq(0) li").removeClass("select");
-                            $(this).addClass("select");
-                            insert($(this).data("threadid"));
-                            tar.find(".window-sms-list").data("address",$(this).data("number"));
-                            tar.find(".window-sms-contact-head img").attr("src",$(this).find("img").attr("src"));
-                            tar.find(".window-sms-contact-name").text($(this).data("name"));
-                            tar.find(".window-sms-contact-number").text($(this).data("number"));
-                        });
-                        tar.find(".window-sms-send textarea").keyup(function(){
-                            tar.find(".window-sms-send span").text(CountSmsCharacters($(this).val()));
-                        });
-                        tar.find(".window-sms-send button").click(function(){
-                            var text = tar.find(".window-sms-send textarea").val();
-                            if(text=="")return false;
-                            var number = tar.find(".window-sms-contact-number").text();
-                            send(number,text);
-                        });
-                        tar.find("ul:eq(0) li:first").click();
                     });
                 },function(e,t){
                     loading.remove();

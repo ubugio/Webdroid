@@ -1,0 +1,81 @@
+.tasks-contain table {
+    width: 100%;
+}
+
+.tasks-contain {
+    height: 430px;
+    overflow: auto;
+    border-bottom: 2px solid #DBDBDB;
+    border-top: 1px solid #DBDBDB;
+    position: absolute;
+    width: 100%;
+    display: none;
+}
+.tasks-contain.tasks-contain-active {
+display: block;
+}
+.tasks-contain-img{
+    text-align: center;
+}
+.tasks-contain-img img{
+    height: 25px;
+}
+
+
+li.tasks-tab {
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    padding: 0 10px;
+    border-radius: 5px 5px 0 0;
+    background: #EAEAEA;
+    border: 1px solid #C8C8C8;
+    border-bottom: 0;
+    cursor: pointer;
+    width: 48px;
+text-align: center;
+}
+
+.tasks-tabs {
+    margin: 4px 0 0 10px;
+}
+
+li.tasks-tab.tasks-tab-active,li.tasks-tab:hover {
+    background: #FFF;
+    font-weight: bold;
+}
+.tasks-status-bar {
+    height: 25px;
+    line-height: 25px;
+    padding-left: 12px;
+    font-size: 14px;
+}
+
+.tasks-contains {
+    height: 435px;
+}
+span.tasks-process-kill {
+    color: #9B9B9B;
+    padding: 0 2px;
+    border: 1px solid #E8E8E8;
+    border-radius: 7px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+span.tasks-process-kill:hover {
+    background: #000;
+    color: #fff;
+}
+.tasks-refresh-intrval {
+    display: inline-block;
+}
+
+.tasks-refresh-intrval input[type=text] {
+    width: 25px;
+}
+
+.tasks-refresh {
+    width: 170px;
+    float: right;
+}

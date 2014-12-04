@@ -72,6 +72,7 @@ TEMP['notify'] = function(air){
             autoFadeOut:air.Options.NotifyAutoFadeOutTime
         };
         option = $.extend(defaultOptions,option);
+        option.text = option.text.replace("\n","<br />");
         var o={
             ID:option.id,
             IMG:'<img src="'+option.icon+'" />',

@@ -23,11 +23,21 @@ border-radius: 9px;
 margin-right: 10px;
 margin-top: 4px;
 }
-.window-contacts-list div {
-display: inline-block;
-vertical-align: top;
-font-size: 14px;
-font-weight: bold;
+.window-contacts-list div.window-contacts-desc {
+    display: inline-block;  vertical-align: top;  
+    font-size: 13px;
+}
+.window-contacts-list div.window-contacts-desc p.window-contacts-name {
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: -5px;
+}
+.window-contacts-list div.window-contacts-desc p {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 190px;  
+    display: block;
 }
 .window-contacts ul {
     list-style: none;
@@ -37,7 +47,6 @@ font-weight: bold;
 .window-contacts-list ul li {
     height: 60px;
     border-bottom: 1px solid #ddd;
-    line-height: 60px;
     vertical-align: middle;
     padding-left: 10px;
     cursor:pointer;

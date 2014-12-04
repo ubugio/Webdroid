@@ -1,8 +1,8 @@
 <div class="screen-wrap">
     <div class="screen-shot">
-        <div class="screen-shot-imageContain waves-effect waves-block">
+        <div class="screen-shot-imageContain">
             <img src="">
-            <span class="screen-shot-fps"></span>
+            <canvas id="screen-shot-canvas">哈哈，浏览器弱爆了！！</canvas>
         </div>
         <div class="screen-shot-buttons">
             <span class="screen-shot-button-menu">menu</span>
@@ -12,10 +12,13 @@
     </div>
     <div class="screen-shot-buttons-right">
         <div class="screen-shot-buttonsContain">
+            <span class="screen-shot-fps"></span>
             <span class="screen-shot-button-name">--控制台--</span>
             <span class="screen-shot-button-fullScreen">全屏</span>
             <span class="screen-shot-button-interval">连续</span>
             <span class="screen-shot-button-refresh">刷新</span>
+            <span class="screen-shot-button-sht">截图</span>
+            <span class="screen-shot-button-rebot" data-button="power">重启</span>
             <span class="screen-shot-button-quality">
                 <select>
                     <option value="poor" selected="selected">poor</option>
@@ -24,8 +27,6 @@
                     <option value="prefect">prefect</option>
                 </select>
             </span>
-            <span class="screen-shot-button-sht">截图</span>
-            <span class="screen-shot-button-rebot" data-button="power">重启</span>
         </div>
         <div class="screen-shot-buttonsContain">
             <span class="screen-shot-button-name">--命令区--</span>

@@ -16,8 +16,8 @@ public class runCommond {
 	public final String simulateTouch(int x,int y) {
 		return exec("input tap " + x +" " +y);
 	}
-	public final String simulateSwap(int x,int y,int x2,int y2) {
-		return exec("input swipe " + x +" " + y +" "+ x2 +" " +y2);
+	public final String simulateSwap(int x,int y,int x2,int y2,int dur) {
+		return exec("input swipe " + x +" " + y +" "+ x2 +" " +y2 +" " +dur);
 	}
 	public final String simulateText(String txt) {
 		return exec("input text " + txt);

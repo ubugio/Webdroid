@@ -176,7 +176,6 @@ public class GetFileJson {
 		});
 	}
 
-
 	private void appendRow(List<Map<String, Object>> listems, File f,String path) {
 		String clazz, link,size,name,clazz_ext;
 		name = f.getName();
@@ -265,7 +264,7 @@ public class GetFileJson {
         return jsonresult;  
 	}
 	public String imagesList(String bucketname,String limit,String offset){
-	    Cursor cursor = mcontext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,null, MediaStore.Images.Media.BUCKET_DISPLAY_NAME+"=\""+bucketname+"\"", null,MediaStore.Images.Media.DEFAULT_SORT_ORDER+" limit "+limit+" offset "+offset);
+	    Cursor cursor = mcontext.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,null, MediaStore.Images.Media.BUCKET_DISPLAY_NAME+"=\""+bucketname+"\"", null,MediaStore.Images.Media.DATE_MODIFIED + " desc limit "+limit+" offset "+offset);
 		List<Map<String, Object>> listems = new ArrayList<Map<String, Object>>();
 		if(cursor.moveToFirst()){
 		    do{
@@ -305,7 +304,7 @@ public class GetFileJson {
         return jsonresult;  
 	}
 	public String videosList(String bucketname,String limit,String offset){
-	    Cursor cursor = mcontext.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,null, MediaStore.Video.Media.BUCKET_DISPLAY_NAME+"=\""+bucketname+"\"", null,MediaStore.Video.Media.DEFAULT_SORT_ORDER+" limit "+limit+" offset "+offset);
+	    Cursor cursor = mcontext.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,null, MediaStore.Video.Media.BUCKET_DISPLAY_NAME+"=\""+bucketname+"\"", null,MediaStore.Video.Media.DATE_MODIFIED + " desc limit "+limit+" offset "+offset);
 		List<Map<String, Object>> listems = new ArrayList<Map<String, Object>>();
 		if(cursor.moveToFirst()){
 		    do{

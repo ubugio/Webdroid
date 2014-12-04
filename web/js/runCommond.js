@@ -133,8 +133,8 @@ var removeTerminalWindow = function(){
             func && func(data);
         },"json");
     };
-    var slide = function(from,to,func){
-        $.get(cmdUrl+"?mode=runcmd&action=Swap&x="+from[0]+"&y="+from[1]+"&x2="+to[0]+"&y2="+to[1],function(data){
+    var slide = function(from,to,dur,func){
+        $.get(cmdUrl+"?mode=runcmd&action=Swap&x="+from[0]+"&y="+from[1]+"&x2="+to[0]+"&y2="+to[1]+"&duration="+dur,function(data){
             func && func(data);
         },"json");
     };

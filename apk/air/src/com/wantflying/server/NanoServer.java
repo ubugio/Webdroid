@@ -27,6 +27,7 @@ import com.wantflying.air.GetAppsJson;
 import com.wantflying.air.GetContactsJson;
 import com.wantflying.air.GetFileJson;
 import com.wantflying.air.GetPhoneJson;
+import com.wantflying.air.GetRunStatusJson;
 import com.wantflying.air.GetSmsJson;
 import com.wantflying.air.GetStatusJson;
 import com.wantflying.air.ScreenShot;
@@ -43,6 +44,8 @@ public class NanoServer extends NanoHTTPD {
 	public static ScreenShot screenShot=null;
 	public static runCommond cmd=null;
 	public static ShellUtil shell=null;
+	public static GetRunStatusJson runStatus=null;
+	
 	public static final String HTML_SUCCESS_STRING = "<html>"
 			+ "<head><title>Air</title></head>"
 			+ "<body>"
@@ -63,6 +66,7 @@ public class NanoServer extends NanoHTTPD {
 		PhoneJson = new GetPhoneJson(mcontext);
 		shell = ShellUtil.getInstance();
 		cmd = new runCommond(shell);
+		runStatus = new GetRunStatusJson(mcontext);
 	}
 	public static void checkAirDirs(){
 		String airDir = Environment.getExternalStorageDirectory().getPath()+ File.separator +"air";
@@ -101,6 +105,8 @@ public class NanoServer extends NanoHTTPD {
 						output = devie_status();
 					}else if(parms.get("action").equals("contacts")){
 						output = devie_contacts();
+					}else if(parms.get("action").equals("addContact")){
+						output = ContactsJson.addNewContact(parms.get("name"), parms.get("phone"));
 					}else if(parms.get("action").equals("phones")){
 						output = devie_phones();
 					}else if(parms.get("action").equals("apps")){
@@ -456,6 +462,25 @@ public class NanoServer extends NanoHTTPD {
 					ret.addHeader("Access-Control-Allow-Origin", "*");
 					return ret;
 				}
+			}else if(parms.get("mode").equals("process")){
+				if(parms.get("action").equals("services")){
+					output = runStatus.getRunningServicesInfo();
+				}else if(parms.get("action").equals("tasks")){
+					output = runStatus.getRunningTaskInfo();
+				}else if(parms.get("action").equals("process")){
+					output = runStatus.getProcessTaskInfo();
+				}else if(parms.get("action").equals("processkill")){
+					if(parms.containsKey("process")){
+						output = runStatus.killProcessByProcess(parms.get("process"));
+					}else{
+						output = runStatus.killProcess();
+					}
+				}
+				Response ret = new Response(output);
+				ret.setMimeType("application/Json");
+				ret.addHeader("Cache-control", "no-cache");
+				ret.addHeader("Access-Control-Allow-Origin", "*");
+				return ret;
 			}else if(parms.get("mode").equals("screen")){
 				if(parms.get("action").equals("shot")){
 					InputStream in = null;
@@ -490,7 +515,9 @@ public class NanoServer extends NanoHTTPD {
 					int y = Integer.parseInt(parms.get("y")) * screen.get(1)/100;
 					int x2 = Integer.parseInt(parms.get("x2")) * screen.get(0)/100;
 					int y2 = Integer.parseInt(parms.get("y2")) * screen.get(1)/100;
-					output = cmd.simulateSwap(x,y,x2,y2);
+					int dur = Integer.parseInt(parms.get("duration"));
+					
+					output = cmd.simulateSwap(x,y,x2,y2,dur);
 				}else if(parms.get("action").equals("button")){
 					int l = Integer.parseInt(parms.get("button"));
 					output = cmd.simulateKey(l);

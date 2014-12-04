@@ -1,4 +1,4 @@
-TEMP['Lang-CN_zh'] = function(air){
+TEMP['Lang-ZH-CN'] = function(air){
     return {
         icon_name_help:"帮助",
         icon_name_device:"设备信息",
@@ -16,6 +16,7 @@ TEMP['Lang-CN_zh'] = function(air){
         icon_name_terminal:"命令窗口",
         icon_name_keyboard:"键盘",
         icon_name_notifies:"通知管理",
+        icon_name_tasks:"任务管理器",
         window_aleardy_existed:"窗口已经存在",
         no_wifi:"无wifi",
         
@@ -89,6 +90,8 @@ TEMP['Lang-CN_zh'] = function(air){
         text_send_fail:"发送失败",
         text_upload_path:"上传目标目录",
         text_change_path:"更改路径",
+        text_new:"新建",
+        text_sendto:"发送给：",
         text_new_sms:"新的短消息",
         icons_Order_save:"图标顺序已被保存",
         received:"对方已经成功接收短信",

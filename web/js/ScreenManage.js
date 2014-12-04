@@ -29,7 +29,8 @@ TEMP['ScreenManage'] = function (air) {
         air.require("Templete").getTemplate("window-screen",function(temp){
             ScreenContainer.setContent(temp);
             ScreenContainer.find(".screen-shot-imageContain img").css({"width":options.w,"height":options.h});
-            loading = air.require("windowHandles").setLoading(ScreenContainer.find(".screen-shot-imageContain"));
+            $("#screen-shot-canvas").attr({"width":options.w,"height":options.h});
+            loading = air.require("util").setLoading(ScreenContainer.find(".screen-shot-imageContain"));
             getScreenShot(options.w,options.h,options.q);
             ScreenContainer.find(".screen-shot-button-interval").click(function(){
                 if(!Recording){
@@ -44,7 +45,7 @@ TEMP['ScreenManage'] = function (air) {
                 alert("not ready");
             });
             ScreenContainer.find(".screen-shot-button-refresh").click(function(){
-                loading = air.require("windowHandles").setLoading(ScreenContainer.find(".screen-shot-imageContain"));
+                loading = air.require("util").setLoading(ScreenContainer.find(".screen-shot-imageContain"));
                 getScreenShot(options.w,options.h,options.q,function(){
                     loading.remove();
                 });
@@ -66,7 +67,7 @@ TEMP['ScreenManage'] = function (air) {
         img.onload = function () {
             ScreenContainer.find(".screen-shot-imageContain img").attr("src",imgUrl);
             if(loading!=null)loading.remove();
-            fps=1000/(new Date().getTime()-st);
+            fps=Math.round(100000/(new Date().getTime()-st))/100;
             func && func();
         };
     };
@@ -76,7 +77,7 @@ TEMP['ScreenManage'] = function (air) {
     };
     var screenLoop=function(){
         if(Recording){
-            ScreenContainer.find(".screen-shot-imageContain .screen-shot-fps").text(fps+"fps");
+            ScreenContainer.find(".screen-shot-fps").text(fps+"fps");
             getScreenShot(options.w,options.h,options.q,function(){
                 screenLoop();
             });
@@ -84,7 +85,7 @@ TEMP['ScreenManage'] = function (air) {
     };
     var screenRecordStop = function(){
         Recording = false;
-        ScreenContainer.find(".screen-shot-imageContain .screen-shot-fps").text("");
+        ScreenContainer.find(".screen-shot-fps").text("");
     };
 //-------------------------------------------------------
 //http://192.168.1.100:7910/?mode=runcmd&action=button&button=3
@@ -99,13 +100,52 @@ var bindButtons = function(tar){
     tar.find(".screen-shot-button-menu").click(function(){
         air.require("runCommond").button("MENU");
     });
-    tar.find(".screen-shot-imageContain").click(function(e){
+    var swip = false;
+    var canvas = $("#screen-shot-canvas")[0];
+    var ctx = canvas.getContext('2d');
+    var cW = $(canvas).width();
+    var cH = $(canvas).height();
+    tar.find(".screen-shot-imageContain").mousedown(function(e){
+        var t = new Date();
         var x=$(this).offset();
         var w=$(this).width();
-        var wp =parseInt(100*(e.pageX - x.left)/w);
         var h=$(this).height();
-        var hp =parseInt(100*(e.pageY - x.top)/h);
-        air.require("runCommond").touch(wp,hp);
+        var sx = e.pageX,sy = e.pageY;
+        var wp =parseInt(100*(sx - x.left)/w),hp =parseInt(100*(sy - x.top)/h);
+        ctx.beginPath();
+        ctx.arc((sx - x.left), (sy - x.top), 6, 0, Math.PI*2, true); 
+        ctx.fillStyle = "#CC0000"; 
+        ctx.fill();
+        ctx.closePath();
+        $(document).mousemove(function(e1){
+            swip = true ;
+            ctx.clearRect(0,0,cW,cH);
+            ctx.beginPath();
+            ctx.arc((sx - x.left), (sy - x.top), 6, 0, Math.PI*2, true); 
+            ctx.fillStyle = "#CC0000"; 
+            ctx.fill();
+            ctx.moveTo((sx - x.left), (sy - x.top));
+            ctx.lineTo((e1.pageX - x.left), (e1.pageY - x.top));
+            ctx.lineWidth = 1.0;
+            ctx.strokeStyle = "#CC0000";
+            ctx.stroke();
+            ctx.closePath();
+        }).mouseup(function(en){
+            if(swip){
+                console.log("swip");
+                swip = false ;
+                var wp2 =parseInt(100*(en.pageX - x.left)/w);
+                var hp2 =parseInt(100*(en.pageY - x.top)/h);
+                var tg = new Date()-t;
+                air.require("runCommond").slide([wp,hp],[wp2,hp2],tg);
+            }else{
+                console.log("click");
+                air.require("runCommond").touch(wp,hp);
+            }
+            ctx.clearRect(0,0,cW,cH);
+            $(document).unbind("mousemove mouseup");
+            return false;
+        });
     });
 };
 //-------------------------------------------------------

@@ -27,10 +27,5 @@ public class MainActivity extends Activity {
     	startActivity(intent);
     	return true;
     }
-    public boolean open_camera(View view){
-    	Intent intent = new Intent(this,CameraActivity.class);
-    	startActivity(intent);
-    	return true;
-    }
     
 }

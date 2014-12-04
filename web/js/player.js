@@ -50,7 +50,7 @@ TEMP['player'] = function(air){
             miniPanel.fadeOut();
             tar.slideDown();
         });
-        var loading = air.require("windowHandles").setLoading(tar);
+        var loading = air.require("util").setLoading(tar);
         $("span.pause").hide();
         $(".player-volnow").width(defaultVol+"%");
         $(".player-volume i").text(defaultVol);

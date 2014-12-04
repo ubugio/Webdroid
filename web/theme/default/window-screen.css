@@ -1,13 +1,7 @@
 
 /****************screenShot************************/
-span.screen-shot-fps {
-    position: absolute;
-    left: 0;
-    color: #fff;
-    top:20px;
-}
 .screen-shot-buttons,.screen-shot-buttonsContain {
-    height: 25px;
+    /* height: 25px; */
 }
 .screen-shot-buttons span {
     display: inline-block;
@@ -36,8 +30,9 @@ span.screen-shot-fps {
     color: #fff;
 }
 .screen-shot-buttonsContain span {
+    display: inline-block;
     height: 15px;
-    margin: 0 13px;
+    margin: 2px 4px;
     padding: 2px 3px;
     cursor: pointer;
 }
@@ -57,4 +52,15 @@ span.screen-shot-fps {
 }
 .screen-shot-imageContain {
 position: relative;
+}
+span.screen-shot-button-name {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    color: #3143F4;
+    margin-top: 11px;
+}
+canvas#screen-shot-canvas {
+position: absolute;
+top: 0;
 }

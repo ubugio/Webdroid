@@ -44,13 +44,11 @@ class MyWebSocket extends WebSocket {
 
     @Override
     protected void handleWebsocketFrame(WebSocketFrame frame) throws IOException {
-            System.out.println("R " + frame);
         super.handleWebsocketFrame(frame);
     }
 
     @Override
     public synchronized void sendFrame(WebSocketFrame frame) throws IOException {
-            System.out.println("S " + frame);
         super.sendFrame(frame);
     }
 }

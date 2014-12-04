@@ -1,15 +1,12 @@
 package com.wantflying.air;
 
-import com.wantflying.server.NanoWebSocketServer;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
+
+import com.wantflying.server.NanoWebSocketServer;
 
 public class SmsReceiver extends BroadcastReceiver {
 
@@ -26,7 +23,6 @@ public class SmsReceiver extends BroadcastReceiver {
 				for(int i = 0 ;i<pdus.length;i++){
 					msg[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
 				}
-				
 				for(SmsMessage curMsg:msg){
 					String sender = curMsg.getDisplayOriginatingAddress();
 					sb.append("You got the message From:¡¾");
@@ -34,10 +30,7 @@ public class SmsReceiver extends BroadcastReceiver {
 					sb.append("¡¿Content£º");
 					sb.append(curMsg.getDisplayMessageBody());
 		        	NanoWebSocketServer.userList.sendToAll("{\"type\":\"smsR\",\"data\":{\"sendtime\":\""+curMsg.getTimestampMillis()+"\",\"sender\":\""+sender+"\",\"content\":\""+curMsg.getDisplayMessageBody()+"\"}}");
-				}
-    			Toast.makeText(arg0, 
-    					"Got The Message:" + sb.toString(),
-    	                Toast.LENGTH_SHORT).show();		
+				}	
 			}
 		}
 	}

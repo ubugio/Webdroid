@@ -18,14 +18,5 @@
         android:onClick="open_nano_server"
         android:text="@string/open_nano_server" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="72dp"
-        android:onClick="open_camera"
-        android:text="Button" />
 
 </RelativeLayout>

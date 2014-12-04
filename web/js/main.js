@@ -5,13 +5,19 @@ $(function(){
         var _t=this;
         _t.Options={
             debug:!0,
-            ip:"192.168.1.110",
-            port:"7910",
-            socketPort:"9999",
+            ip:"",
+            port:"",
+            socketPort:"",
+            remoteUrl:"http://droid4web.sinaapp.com/",
         
             theme:"default",
             version:"1.0",
             uploadPath:"sdcard/air",
+            
+            baseData:{
+                contacts:null,
+                apps:null
+            },
             
             heartBeatInterval:10000,
             heartBeatFaultTimesMax:5,
@@ -28,10 +34,12 @@ $(function(){
             NotifyAutoFadeOutTime:10000
         };
         $.extend(_t.Options,config);
+        _t.Options.uploadFilePath = "./common/upload/";
         _t.Options.themePath = "./theme/"+_t.Options.theme+"/";
         _t.Options.imagePath = _t.Options.themePath+"images/";
         _t.Options.iconPath = _t.Options.imagePath+"icons/";
         _t.Options.templatePath = _t.Options.themePath+"template/";
+        _t.Options.language = (navigator.language || navigator.systemLanguage).toLocaleUpperCase();
         
         $(window).resize(function(){
             _t.Options.ScreenSize=[$(window).width(),$(window).height()];
@@ -46,7 +54,7 @@ $(function(){
         window.document.ondragstart=function(){window.event.returnValue = false;};
 		//document.oncontextmenu=rf;
         _t.MOUDLES={};
-        _t.Lang = _t.require("Lang-CN_zh");
+        _t.Lang = _t.require("Lang-"+_t.Options.language);
         var init = _t.require("initAir").rander();
         
     };
@@ -64,7 +72,7 @@ $(function(){
                 },
                 error:function(e,t){
                     console.log(e);
-                    Air.LOG("Air.getMoudle",t);
+                    Air.LOG("Air.getMoudle",moudle+"|"+t);
                 }
             });
         },
@@ -81,5 +89,5 @@ $(function(){
     Air.LOG=function(tag,msg){
         console.log(tag+"===>"+msg);
     };
-    var air = new Air();
+    window.air = new Air();
 });

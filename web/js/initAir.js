@@ -63,65 +63,24 @@ TEMP['initAir'] = function(air){
                 }
             });
         }
-        var inputC = air.require("popup").popup({
-            checkFunction:function(con){
-                air.Options.ip = con.find(".input-ip").val();
-                air.Options.port = con.find(".input-port").val();
-                air.Options.socketPort = con.find(".input-socketPort").val();
-                heartBeat();
-                tryConnectSocket();
-            },
-            cancelFunction:null,
-            title:air.Lang.text_initSystem,
-            content:air.require("UI").substitute(air.require("Templete").initSystemTemplate,{
-                    text_initSystemSocketPort:air.Lang.text_initSystemSocketPort,
-                    text_initSystemPort:air.Lang.text_initSystemPort,
-                    text_initSystemIp:air.Lang.text_initSystemIp,
-                    text_initSystemDesc:air.Lang.text_initSystemDesc,
-                    SOCKET:air.Options.socketPort,
-                    PORT:air.Options.port,
-                    IP:air.Options.ip,
-                })
-        });
-        var ss = $('<p style="color:#a10;"></p>');
-        var ssb = $('<button>reload</button>');
-        inputC.find(".input-mes").append(ss);
-        inputC.find(".input-mes").append(ssb);
-        var load = function(){
-            ss.html(air.Lang.text_remoteIp_getting);
-            air.require("dataTran").getJsonFromUrl("http://droid4web.sinaapp.com/ipget.php",
-            {},
-            function(data){
-                if(data.status=="ok"){
-                    inputC.find(".input-ip").val(data.ip);
-                    inputC.find(".input-port").val(data.port);
-                    inputC.find(".input-socketPort").val(data.socketport);
-                    ss.html(air.Lang.text_remoteIp+" ("+data.updatetime+')');
-                }
-            },
-            function(){}
-            );
-        };
-        load();
-        ssb.click(function(){load();});
-        
+        air.require("connectPanel").init();
     };
     // 注入样式表方法
     var PublicSetStyle = function(path,id){
         if($("#"+id).length>0)return;
-        console.log(path);
         $("head").append('<link id="'+id+'" rel="stylesheet" href="'+path+"?v="+new Date().getTime()+'" type="text/css" media="screen" />');
     };
     
     var heartBeatFaultTimes=0;
     var heartBeat = function(){
+        var _t = this;
         $(".layout-notify-container").addClass("refreshing");
         air.require("dataTran").getJson(
             {mode:"device","action":"status"},
             function(json){
                 if(heartBeatFaultTimes>0){
                     heartBeatFaultTimes=0;
-                    reConnectSocket();
+                    _t.reConnectSocket();
                     air.require("notify").notify({
                         id:"disconnect",
                         icon:air.Options.imagePath+"icon-inf.png",
@@ -144,8 +103,8 @@ TEMP['initAir'] = function(air){
                             text:air.Lang.disconnectFromServerDesc,
                             autoFadeOut:false,
                             onclick:function(){
-                                heartBeat();
-                                reConnectSocket();
+                                _t.heartBeat();
+                                _t.reConnectSocket();
                             }
                         });
                     }else{
@@ -161,7 +120,7 @@ TEMP['initAir'] = function(air){
             },function(){
                 $(".layout-notify-container").removeClass("refreshing");
                 if(heartBeatFaultTimes<air.Options.heartBeatFaultTimesMax){
-                    setTimeout(function(){heartBeat();},air.Options.heartBeatInterval);
+                    setTimeout(function(){_t.heartBeat();},air.Options.heartBeatInterval);
                 }
             }
         );
@@ -232,9 +191,21 @@ TEMP['initAir'] = function(air){
     var reConnectSocket=function(){
         air.require("socket").reConnectSocket();
     };
+    var getBaseData = function(){//获取初始的联系人列表和软件列表
+        air.require("dataTran").getJson({mode:"device","action":"contacts"},function(data){
+            air.Options.baseData.contacts = data;
+        });
+        air.require("dataTran").getJson({mode:"device","action":"apps"},function(data){
+            air.Options.baseData.apps = data;
+        });
+    };
     
     return {
+        getBaseData:getBaseData,
         rander:PublicRander,
         setStyle:PublicSetStyle,
+        heartBeat:heartBeat,
+        reConnectSocket:reConnectSocket,
+        tryConnectSocket:tryConnectSocket
     };
 };

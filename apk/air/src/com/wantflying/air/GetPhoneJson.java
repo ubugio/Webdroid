@@ -13,6 +13,7 @@ public class GetPhoneJson {
 		mcontext = pcontext;
 		registerPhoneReceiver(mcontext);
 	}
+	@SuppressWarnings("unused")
 	private void registerSmsReceiver(Context mcontext){
 		SmsReceiver smsRcvr = new SmsReceiver();
 	    IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_CALL);

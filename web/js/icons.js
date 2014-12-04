@@ -18,7 +18,10 @@ TEMP['icons'] = function(air){
         "sms":{
             name:air.Lang.icon_name_sms,
             src:"messages_80",
-            id:"sms"
+            id:"sms",
+            click:function(){
+                air.require("SmsPhone").openSmsWindow();
+            }
         },
         "apps":{
             name:air.Lang.icon_name_apps,
@@ -82,6 +85,14 @@ TEMP['icons'] = function(air){
             id:"keyboard",
             click:function(){
                 air.require("keyBoard").openKeyBoard();
+            }
+        },
+        "tasks":{
+            name:air.Lang.icon_name_tasks,
+            src:"tasks_80",
+            id:"tasks",
+            click:function(){
+                air.require("tasks").openTasksContainer();
             }
         }
     };
