@@ -150,6 +150,7 @@ TEMP['Templete'] = function(air){
                             '<div class="dial-panel-num-input">'+
                                 '<input type="text" class="dial-panel-input">'+
                                 '<div class="dial-panel-delete">←</div>'+
+                                '<div class="topbar-ext"></div>'+
                             '</div>'+
                             '<div class="dial-panel-num-buttons">'+
                                 '<div class="dial-panel-num-1">1</div>'+

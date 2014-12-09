@@ -1,6 +1,6 @@
 TEMP['connectPanel'] = function(air){
     var afterLogin = function(){
-        air.require("initAir").heartBeat();
+        //air.require("initAir").heartBeat();
         air.require("initAir").tryConnectSocket();
         air.require("initAir").getBaseData();
         air.require("topbar").init();
@@ -40,9 +40,6 @@ TEMP['connectPanel'] = function(air){
                 })
         });
     };
-    // 这个函数是自动获取服务器端储存的ip信息，当然是在手机已经实现上传过后；而且多用户后需要添加验证id才能取回正常的
-    // 后期是做一个登录框，登陆后可以主动获取特定的ip信息；现在先放着
-    // 现在可以考虑让用户输入test_id_asd8asd9asd来确认身份
     var ss = null;
     var ssb = null;
     var autoGetAfterUploading = function(){
@@ -92,9 +89,11 @@ TEMP['connectPanel'] = function(air){
                         }
                         channel.onclose = function (){
                             ss.html("扫码失效");
+                            loginPanel.find(".input-qr-tip").html("扫码失效").show();
                         }
                         channel.onerror = function (){
                             ss.html("扫码出现错误");
+                            loginPanel.find(".input-qr-tip").html("未知错误").show();
                         }
                         channel.onmessage = function (message) {
                             console.log(message);
@@ -116,13 +115,6 @@ TEMP['connectPanel'] = function(air){
                 }
             }
         });
-        /*
-        // 超过很久没有扫码，失效操作，点击重新有效
-        setTimeout(function(){
-            if(loginPanel.find(".input-img img").attr("src")!="")
-                loginPanel.find(".input-img").append("已失效");
-            cancelQRWaiter();
-        },MaxWaitingTime);*/
     };
     
     var qrDisconnected = function(){

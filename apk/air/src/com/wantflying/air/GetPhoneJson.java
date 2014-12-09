@@ -5,22 +5,21 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 
+import com.wantflying.server.NanoServer;
+
 public class GetPhoneJson {
 	public PhoneReceiver phoneRcvr;
 	public Context mcontext;
 	public GetPhoneJson(Context pcontext){
-		//registerSmsReceiver(mcontext);
 		mcontext = pcontext;
+		registerSmsReceiver(mcontext);
 		registerPhoneReceiver(mcontext);
 	}
-	@SuppressWarnings("unused")
 	private void registerSmsReceiver(Context mcontext){
 		SmsReceiver smsRcvr = new SmsReceiver();
-	    IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_CALL);
+	    IntentFilter batteryLevelFilter = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 	    mcontext.registerReceiver(smsRcvr, batteryLevelFilter);
 	}
-
-
 	private void registerPhoneReceiver(Context mcontext){
 		phoneRcvr = new PhoneReceiver();
 	    IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_CALL);
@@ -30,10 +29,16 @@ public class GetPhoneJson {
 		if(num.trim().length()!=0){ 
          Intent phoneIntent = new Intent("android.intent.action.CALL",Uri.parse("tel:" + num));
          phoneIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         //启动 
          mcontext.startActivity(phoneIntent);
         }
 		return "{\"status\":\"ok\"}";
 	}
+    // 表现很完美
+    public static void answserCall(){
+    	NanoServer.cmd.simulateKey(5);
+    }
+    public static void endCall(){
+    	NanoServer.cmd.simulateKey(6);
+    }
 
 }

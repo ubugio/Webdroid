@@ -13,6 +13,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 import java.util.Vector;
 
+import android.app.PendingIntent.CanceledException;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
@@ -30,6 +31,7 @@ import com.wantflying.air.GetPhoneJson;
 import com.wantflying.air.GetRunStatusJson;
 import com.wantflying.air.GetSmsJson;
 import com.wantflying.air.GetStatusJson;
+import com.wantflying.air.NotificationFetcherService;
 import com.wantflying.air.ScreenShot;
 import com.wantflying.server.NanoHTTPD.Response.Status;
 
@@ -101,6 +103,19 @@ public class NanoServer extends NanoHTTPD {
 				if(parms.containsKey("action")){
 					if(parms.get("action").equals("overview")){
 						output = devie_overview();
+					}else if(parms.get("action").equals("openNotify")){
+						try {
+							NotificationFetcherService.triggerIntent(parms.get("activity"));
+						} catch (CanceledException e) {
+							e.printStackTrace();
+						}
+						output = "{\"status\":\"ok\"}";
+					}else if(parms.get("action").equals("answerPhone")){
+						GetPhoneJson.answserCall();
+						output = "{\"status\":\"ok\"}";
+					}else if(parms.get("action").equals("endCall")){
+						GetPhoneJson.endCall();
+						output = "{\"status\":\"ok\"}";
 					}else if(parms.get("action").equals("status")){
 						output = devie_status();
 					}else if(parms.get("action").equals("contacts")){

@@ -71,60 +71,6 @@ TEMP['initAir'] = function(air){
         $("head").append('<link id="'+id+'" rel="stylesheet" href="'+path+"?v="+new Date().getTime()+'" type="text/css" media="screen" />');
     };
     
-    var heartBeatFaultTimes=0;
-    var heartBeat = function(){
-        var _t = this;
-        $(".layout-notify-container").addClass("refreshing");
-        air.require("dataTran").getJson(
-            {mode:"device","action":"status"},
-            function(json){
-                if(heartBeatFaultTimes>0){
-                    heartBeatFaultTimes=0;
-                    _t.reConnectSocket();
-                    air.require("notify").notify({
-                        id:"disconnect",
-                        icon:air.Options.imagePath+"icon-inf.png",
-                        title:air.Lang.connectedToServer,
-                        text:air.Lang.connectedToServerDesc,
-                        autoFadeOut:3000
-                    });
-                }
-                statusHandle(json);
-            },function(e,t){
-                console.log(t);
-                if(t=="error"){
-                    heartBeatFaultTimes++;
-                    $(".connect-status").addClass("unlink");
-                    if(heartBeatFaultTimes>=air.Options.heartBeatFaultTimesMax){
-                        air.require("notify").notify({
-                            id:"disconnect",
-                            icon:air.Options.imagePath+"icon-alert.png",
-                            title:air.Lang.disconnectFromServer,
-                            text:air.Lang.disconnectFromServerDesc,
-                            autoFadeOut:false,
-                            onclick:function(){
-                                _t.heartBeat();
-                                _t.reConnectSocket();
-                            }
-                        });
-                    }else{
-                        air.require("notify").notify({
-                            id:"disconnect",
-                            icon:air.Options.imagePath+"icon-inf.png",
-                            title:air.Lang.disconnectFromServer,
-                            text:air.Lang.connectingToServer+"("+heartBeatFaultTimes+")"
-                        });
-                        console.log("数据传输出错num:"+heartBeatFaultTimes);
-                    }
-                }
-            },function(){
-                $(".layout-notify-container").removeClass("refreshing");
-                if(heartBeatFaultTimes<air.Options.heartBeatFaultTimesMax){
-                    setTimeout(function(){_t.heartBeat();},air.Options.heartBeatInterval);
-                }
-            }
-        );
-    };
     var alertLowBattery=false;
     var statusHandle = function(data){
         $(".connect-status").removeClass("unlink");
@@ -173,7 +119,10 @@ TEMP['initAir'] = function(air){
             if(mes.type=="notify"){
                 air.require("notify").simpleNotify(
                 'http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&package='+mes.data[0].packageName,
-                mes.data[0].appName,mes.data[0].tickerText);
+                mes.data[0].appName,mes.data[0].tickerText,function(){
+                    if(mes.data[0].hasPendIntent)
+                        $.get('http://'+air.Options.ip+':'+air.Options.port+'/?mode=device&action=openNotify&activity='+mes.data[0].packageName);
+                });
             }else if(mes.type=="status"){
                 statusHandle(mes.data);
             }else if(mes.type=="sms"){
@@ -189,6 +138,7 @@ TEMP['initAir'] = function(air){
         });
     };
     var reConnectSocket=function(){
+        $(".layout-notify-container").addClass("refreshing");
         air.require("socket").reConnectSocket();
     };
     var getBaseData = function(){//获取初始的联系人列表和软件列表
@@ -204,7 +154,6 @@ TEMP['initAir'] = function(air){
         getBaseData:getBaseData,
         rander:PublicRander,
         setStyle:PublicSetStyle,
-        heartBeat:heartBeat,
         reConnectSocket:reConnectSocket,
         tryConnectSocket:tryConnectSocket
     };

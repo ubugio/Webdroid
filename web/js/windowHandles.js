@@ -29,20 +29,6 @@ TEMP['windowHandles'] = function(air){
         out += sformat(value);
         return out;
     };
-    var CountSmsCharacters = function(Words) {
-        var sTotal = 0;
-        var eTotal = 0;
-        for (i = 0; i < Words.length; i++) {
-            var c = Words.charAt(i);
-            if (c.match(/[^\x00-\xff]/)) {
-                sTotal++;
-            } else {
-                eTotal++;
-            }
-        }
-        var should=sTotal==0?"140":"70";
-        return (sTotal+eTotal)+"/"+should;
-    }
 
 
     var handles={

@@ -158,6 +158,7 @@ ul {
 }
 .topbar-user {
     width: 35px;
+    float: left;
 }
 .topbar-user-head img {
     height: 26px;
@@ -166,12 +167,21 @@ ul {
 }
 .topbar-quickSearch {
     vertical-align: top;
+    /* position: absolute; */
+    float: left;
 }
 .topbar-quickSearch input {
     border: 1px solid #ddd;
     height: 22px;
-    margin-top: 6px;
+    z-index: 1;
+    width: 190px;
+    margin: 6px;
     padding: 0 3px;
+    position: absolute;
+    transition: all .3s;
+}
+.topbar-quickSearch input:focus {
+    width: 305px;
 }
 .topbar-tools>div {
     width: 25px;
@@ -181,7 +191,8 @@ ul {
     background: url(images/main.png);
 }
 .topbar-tools {
-    vertical-align: top;
+    margin-left: 195px;
+    float: right;
 }
 .topbar-tools>div.topbar-tool-newphone {
     background-position: -117px -128px;
@@ -230,6 +241,19 @@ padding-left: 2px;
 .topbar-ext ul li a:hover {
     text-decoration: underline;
     color: #5F92F0;
+}
+.topbar-ext span.fr {
+    float: right;
+}
+.topbar-ext span.fr button {
+    margin: 2px 3px;
+}
+.topbar-ext span.num {
+    margin-left: 10px;
+}
+.topbar-ext ul li img {
+margin: 3px;
+vertical-align: middle;
 }
 /*********** icons *******************/
 #icon-sms .num {

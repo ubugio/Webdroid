@@ -10,6 +10,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -32,7 +35,7 @@ import com.wantflying.server.NanoServer;
 import com.wantflying.server.NanoWebSocketServer;
 
 public class OpenNanoServerActivity extends Activity implements OnCheckedChangeListener {
-	NanoHTTPD nanoHTTPD;
+	public static NanoHTTPD nanoHTTPD;
     public static String ip = "";
     public static int port = 7910;
     public static int socketport = 9999;
@@ -77,7 +80,6 @@ public class OpenNanoServerActivity extends Activity implements OnCheckedChangeL
 		toggleBtn.setOnCheckedChangeListener(this);
 		urlText = (TextView) findViewById(R.id.urlText_nano);
 		ulText = (TextView) findViewById(R.id.urlText_userList);
-		
 	}
 
 
@@ -122,11 +124,22 @@ public class OpenNanoServerActivity extends Activity implements OnCheckedChangeL
 	//定义Handler对象
 	@SuppressLint("HandlerLeak")
 	private Handler handler =new Handler(){
+		@SuppressWarnings("deprecation")
 		@Override
 		public void handleMessage(Message msg){
 			super.handleMessage(msg);
 			pd.dismiss();
 			urlText.setText("Server IP://" + ip + "/\n\nhttp port : " + port + "\nWebSocket port : " + socketport);
+			//新建状态栏通知
+			NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);  
+			Notification baseNF = new Notification();
+			baseNF.icon = R.drawable.ic_launcher;
+			baseNF.tickerText = "Air 服务成功启动!";
+			baseNF.flags |= Notification.FLAG_NO_CLEAR;
+	        Intent intent = new Intent(OpenNanoServerActivity.this,StatusActivity.class);
+	        PendingIntent pi = PendingIntent.getActivity(OpenNanoServerActivity.this, 0, intent, 0); 
+			baseNF.setLatestEventInfo(OpenNanoServerActivity.this, "Air服务正在运行", "http://" + ip + ":" + port + "(" + socketport+")", pi);
+			nm.notify(9983, baseNF);
 		}
 	};
 	private void processThread(){

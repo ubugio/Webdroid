@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -25,6 +26,7 @@ import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
+import com.wantflying.server.NanoServer;
 import com.wantflying.server.NanoWebSocketServer;
 
 public class GetStatusJson {
@@ -88,6 +90,8 @@ public class GetStatusJson {
 	    info_NativePhoneNumber=getNativePhoneNumber();
 	    getDisplayMetrics();
 	    monitorBatteryState();
+	    monitorNetWorkState();
+	    monitorWifiState();
 	}
 
 
@@ -342,6 +346,33 @@ public class GetStatusJson {
     private String intToIp(int ip)  {  
     	return (ip & 0xFF) + "." + ((ip >> 8) & 0xFF) + "." + ((ip >> 16) & 0xFF) + "."  
     	+ ((ip >> 24) & 0xFF);  
+    }
+
+    private void monitorNetWorkState() {
+        BroadcastReceiver netWorkReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+    			if(OpenNanoServerActivity.nanoHTTPD!=null)
+    				NanoServer.StatusJson.pushStatus();
+            }
+        };
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mcontext.registerReceiver(netWorkReceiver, mFilter);
+    	return ;
+    }
+    private void monitorWifiState() {
+    	BroadcastReceiver wifiIntentReceiver = new BroadcastReceiver(){
+    		@Override
+    		public void onReceive(Context context, Intent intent) {
+    			if(OpenNanoServerActivity.nanoHTTPD!=null)
+    				NanoServer.StatusJson.pushStatus();
+    		}
+    	};
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        mcontext.registerReceiver(wifiIntentReceiver, mFilter);
+    	return ;
     }
     
     public void getNetWorkInfo(){

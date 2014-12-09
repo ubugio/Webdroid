@@ -6,10 +6,11 @@ import com.wantflying.server.NanoHTTPD.IHTTPSession;
 
 class MyWebSocket extends WebSocket {
     IHTTPSession httpSession;
+    User_WebSocket user ;
 
     public MyWebSocket(NanoHTTPD.IHTTPSession handshake) {
         super(handshake);
-        User_WebSocket user = new User_WebSocket();
+        user = new User_WebSocket();
         user.webSocket = this;
         this.httpSession = handshakeRequest;
         NanoWebSocketServer.userList.addUser(user);
@@ -35,6 +36,7 @@ class MyWebSocket extends WebSocket {
             System.out.println("C [" + (initiatedByRemote ? "Remote" : "Self") + "] " +
                     (code != null ? code : "UnknownCloseCode[" + code + "]") +
                     (reason != null && !reason.isEmpty() ? ": " + reason : ""));
+            NanoWebSocketServer.userList.removeUser(user);
     }
 
     @Override

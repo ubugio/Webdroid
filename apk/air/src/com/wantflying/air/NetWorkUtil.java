@@ -19,16 +19,16 @@ public class NetWorkUtil {
 	    private NetworkInfo networkInfo ;
 	     
 
-		public NetWorkUtil(Context pContext) { 
+		public NetWorkUtil(Context pContext){ 
 	        this.mContext = pContext; 
 	        connectivityManager = (ConnectivityManager) this.mContext.getSystemService(Context.CONNECTIVITY_SERVICE); 
 	        networkInfo = connectivityManager.getActiveNetworkInfo(); 
 	    } 
+
 	     
 	    public static final String IP_DEFAULT = "0.0.0.0"; 
 	 
-	    public static boolean isConnectInternet(final Context pContext) 
-	    { 
+	    public static boolean isConnectInternet(final Context pContext){ 
 	        final ConnectivityManager conManager = (ConnectivityManager) pContext.getSystemService(Context.CONNECTIVITY_SERVICE); 
 	        final NetworkInfo networkInfo = conManager.getActiveNetworkInfo(); 
 	 

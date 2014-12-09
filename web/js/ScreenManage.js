@@ -6,7 +6,7 @@ TEMP['ScreenManage'] = function (air) {
     var options={
         w:270,
         h:480,
-        q:"poor"
+        q:"oo"
     };
     var openScreen = function(){
         if(ScreenContainer!=null)return false;

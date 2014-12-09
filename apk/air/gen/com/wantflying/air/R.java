@@ -50,7 +50,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08001a;
+        public static final int action_settings=0x7f08001b;
         public static final int app_status=0x7f080018;
         /**  Messages IDs 
          */
@@ -58,6 +58,7 @@ public final class R {
         public static final int browser_status=0x7f080017;
         public static final int button1=0x7f08000e;
         public static final int button2=0x7f080012;
+        public static final int connected_users=0x7f08001a;
         public static final int decode=0x7f080001;
         public static final int decode_failed=0x7f080002;
         public static final int decode_succeeded=0x7f080003;

@@ -34,18 +34,23 @@ TEMP['topbar'] = function(air){
                     switch(sg[0]){
                         case "联系人":
                         case "通讯录":
-                            contactSearch(sg[1]);
+                            contactSearch(sg[1],$(".topbar-ext"));
                             break;
                         case "app":
                         case "APP":
                         case "App":
-                            console.log(sg[1]);
+                            appSearch(sg[1]);
                             break;
                         case "豌豆荚":
                         case "在线":
                             market(sg[1]);
                             break;
+                        default:
+                            $(".topbar-ext").html('');
+                            break;
                     }
+            }else{
+                $(".topbar-ext").html('');
             }
         });
     };
@@ -70,17 +75,19 @@ TEMP['topbar'] = function(air){
     var market = function(sg){
         $.getScript("http://suggest2.wandoujia.com/search_sug?key="+sg+"&cb=handleSugData&_="+new Date().getTime());
     };
-    var contactSearch = function(n){
+    var contactSearch = function(n,tar){
         var r = $("<ul></ul>");
         r.delegate(".call","click",function(){
-            //这里拨打电话发送短信事件/考虑号码分拆
-            return false;
+            air.require("SmsPhone").callNum($(this).parent().parent().find(".num").text().replace(/\s/g,""));
+        });
+        r.delegate(".sms","click",function(){
+            air.require("SmsPhone").smsTo($(this).parent().parent().find(".num").text().replace(/\s/g,""));
         });
         var res = contactSearchAry(n);
         $.each(res,function(i,v){
-            $('<li><b>'+v.name+'</b>'+v.num+'<button class="call">拨打</button><button class="sms">发送短信</button></li>').appendTo(r);
+            $('<li><b>'+v.name+'</b><span class="num">'+v.num+'</span><span class="fr"><button class="call">拨打</button><button class="sms">发送短信</button></span></li>').appendTo(r);
         });
-        $(".topbar-ext").html(r);
+        tar.html(r);
     };
     var contactSearchAry = function(n){
         var res = [];
@@ -96,14 +103,34 @@ TEMP['topbar'] = function(air){
                     res.push({num:nums[i],name:name});
                 else
                     if(nums[i].indexOf(n)>-1){
-                        nums[i] = nums[i].replace(n,'<i class="mark">'+n+'</i>');
-                        res.push({num:nums[i],name:name});
+                        res.push({num:nums[i].replace(n,'<i class="mark">'+n+'</i>'),name:name});
                     }
             }
         });
         return res;
     };
+    var appSearch = function(n){
+        var r = $("<ul></ul>");
+        r.delegate(".run","click",function(){
+            // 这里是可以启动程序的事件，暂无
+        });
+        var res = appSearchAry(n);
+        $.each(res,function(i,v){
+            $('<li><img width="20" src="http://'+air.Options.ip+':'+air.Options.port+'/?mode=image&package='+v.packageName+'"><b>'+v.name+'</b><span class="num">'+v.flag+'</span><span class="fr"><button class="run">启动</button></span></li>').appendTo(r);
+        });
+        $(".topbar-ext").html(r);
+    };
+    var appSearchAry = function(n){
+        var res = [];
+        $.each(air.Options.baseData.apps.apps,function(ind,v){
+            if(v.name.indexOf(n)>-1){
+                res.push({packageName:v.packageName,name:v.name.replace(n,'<i class="mark">'+n+'</i>'),isSys:air.Options.baseData.apps.users.indexOf(v.packageName)>-1?"":"system"});
+            }
+        });
+        return res;
+    };
     return {
+        contactSearchAry:contactSearchAry,
         init:init
     };
 };

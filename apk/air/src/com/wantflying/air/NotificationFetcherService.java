@@ -13,6 +13,8 @@ import org.json.JSONObject;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.app.PendingIntent.CanceledException;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.view.accessibility.AccessibilityEvent;
 
@@ -21,6 +23,19 @@ import com.wantflying.server.NanoWebSocketServer;
 public class NotificationFetcherService extends AccessibilityService {
  
     //private static final String TAG = "NotificationFetcherService: ";
+	private static List<Map<String, PendingIntent>> pendIntents = new ArrayList<Map<String, PendingIntent>>();
+	
+	public static void triggerIntent(String pack) throws CanceledException{
+		int i = 0;
+		int l= pendIntents.size();
+		for (i=0;i<l;i++) {
+			Map<String, PendingIntent> ob = pendIntents.get(i);
+			if(ob.containsKey(pack)){
+				ob.get(pack).send();
+				pendIntents.remove(i);
+			}
+		}
+	}
  
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (!(event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) ){
@@ -37,12 +52,21 @@ public class NotificationFetcherService extends AccessibilityService {
 	            System.out.println("********************************");
 	            String text = notification.tickerText.toString();
 	            String getPackage = notification.contentView.getPackage();
+	            PendingIntent pendIntent = notification.contentIntent;
+	            boolean hasPendIntent = false;
+				if (pendIntent!=null){
+    				Map<String, PendingIntent> listem = new HashMap<String, PendingIntent>();
+    		        listem.put(getPackage,pendIntent);
+    		        pendIntents.add(listem);
+    		        hasPendIntent = true;
+				}
 	            System.out.println("tickerText: " + text);
 				Map<String, Object> listem = new HashMap<String, Object>();
 		        listem.put("tickerText", text);
 				listem.put("packageName", getPackage );
+				listem.put("hasPendIntent", hasPendIntent );
 		        try {
-					listem.put("appName", GetAppsJson.packageName(getPackage) );
+					listem.put("appName", GetAppsJson.packageName(getPackage));
 				} catch (NameNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e1) {

@@ -1,0 +1,6 @@
+name: droid4web
+version: 1
+handle:
+- rewrite: if( path == "/_sae/channel/connected" ) goto "/api/channel/connected.php"
+- rewrite: if( path == "/_sae/channel/disconnected" ) goto "/api/channel/disconnected.php"
+- rewrite: if( path == "/_sae/channel/message" ) goto "/api/channel/message.php"

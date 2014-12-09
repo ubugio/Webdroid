@@ -24,13 +24,15 @@ public class ScreenShot {
 		
 		int _quality=100;
 		if(quality.equalsIgnoreCase("prefect"))
-			_quality=20;
-		if(quality.equalsIgnoreCase("good"))
 			_quality=80;
+		if(quality.equalsIgnoreCase("good"))
+			_quality=50;
 		if(quality.equalsIgnoreCase("fine"))
-			_quality=60;
+			_quality=20;
 		if(quality.equalsIgnoreCase("poor"))
-			_quality=40;
+			_quality=10;
+		if(quality.equalsIgnoreCase("poorpoor"))
+			_quality=5;
 		
 		 Bitmap bitmap = null;  
 	        BitmapFactory.Options options = new BitmapFactory.Options();  
@@ -55,7 +57,7 @@ public class ScreenShot {
 	        bitmap = ThumbnailUtils.extractThumbnail(bitmap, width, height,ThumbnailUtils.OPTIONS_RECYCLE_INPUT); 
 		
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        bitmap.compress(Bitmap.CompressFormat.PNG, _quality, baos);
+	        bitmap.compress(Bitmap.CompressFormat.JPEG, _quality, baos);
 	        return new ByteArrayInputStream(baos.toByteArray());
 	}
 }

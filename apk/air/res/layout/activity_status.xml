@@ -42,4 +42,13 @@
         android:layout_marginBottom="22dp"
         android:text="@string/total_status" />
 
+    <TextView
+        android:id="@+id/connected_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/browser_status"
+        android:layout_marginTop="65dp"
+        android:text="@string/total_status" />
+
 </RelativeLayout>

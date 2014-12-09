@@ -102,8 +102,8 @@ TEMP['notify'] = function(air){
         });
     };
 //------------------------
-var simpleNotify=function(icon,title,text){
-    var opt = {icon:icon,title:title,text:text,id:title.replace(" ","")};
+var simpleNotify=function(icon,title,text,click){
+    var opt = {icon:icon,title:title,text:text,id:title.replace(" ",""),onclick:click};
     if(air.Options.windowActive){
         notifyLocal(opt);
     }else{
@@ -118,11 +118,11 @@ var notify=function(opt){
     }
 };
 //--------------------------
-var alertNotify=function(title,text){
-    simpleNotify(air.Options.imagePath+"icon-alert.png",title,text);
+var alertNotify=function(title,text,click){
+    simpleNotify(air.Options.imagePath+"icon-alert.png",title,text,click);
 };
-var warningNotify=function(title,text){
-    simpleNotify(air.Options.imagePath+"icon-inf.png",title,text);
+var warningNotify=function(title,text,click){
+    simpleNotify(air.Options.imagePath+"icon-inf.png",title,text,click);
 };
 var removeNotify=function(id){
     if($(".notify-"+id).length>0){

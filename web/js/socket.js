@@ -1,6 +1,8 @@
 TEMP['socket'] = function(air){
     var wsServer = 'ws://'+air.Options.ip+':'+air.Options.socketPort+'/'; 
     window.websocket=null;
+    var heartBeatFaultTimes=0;
+    
     var connect=function(){
         try{
             websocket = new WebSocket(wsServer); 
@@ -14,12 +16,49 @@ TEMP['socket'] = function(air){
     };
     connect();
     
-    function onOpen(evt) { 
+    var onOpen = function(evt) { 
         console.log("Connected to WebSocket server("+wsServer+") Success !"); 
+        $(".layout-notify-container").removeClass("refreshing");
+        if(heartBeatFaultTimes>0){
+            heartBeatFaultTimes=0;
+            air.require("notify").notify({
+                id:"disconnect",
+                icon:air.Options.imagePath+"icon-inf.png",
+                title:air.Lang.connectedToServer,
+                text:air.Lang.connectedToServerDesc,
+                autoFadeOut:3000
+            });
+        }
     } 
-    function onClose(evt) { 
+    var onClose = function(evt) { 
         console.log("Disconnected From "+wsServer); 
         air.require("notify").toast("socket:"+air.Lang.socket_closed);
+        $(".layout-notify-container").removeClass("refreshing");
+        heartBeatFaultTimes++;
+        $(".connect-status").addClass("unlink");
+        if(heartBeatFaultTimes>=air.Options.heartBeatFaultTimesMax){
+            air.require("notify").notify({
+                id:"disconnect",
+                icon:air.Options.imagePath+"icon-alert.png",
+                title:air.Lang.disconnectFromServer,
+                text:air.Lang.disconnectFromServerDesc,
+                autoFadeOut:false,
+                onclick:function(){
+                    connect();
+                }
+            });
+        }else{
+            air.require("notify").notify({
+                id:"disconnect",
+                icon:air.Options.imagePath+"icon-inf.png",
+                title:air.Lang.disconnectFromServer,
+                text:air.Lang.connectingToServer+"("+heartBeatFaultTimes+")"
+            });
+            console.log("数据传输出错num:"+heartBeatFaultTimes);
+            if(heartBeatFaultTimes<air.Options.heartBeatFaultTimesMax){
+                setTimeout(function(){connect();},air.Options.heartBeatInterval);
+            }
+        }
     } 
     var Lists={};
     function onMessage(evt) {
@@ -46,6 +85,7 @@ TEMP['socket'] = function(air){
     //----------------------------
     return {
         reConnectSocket:connect,
+        connectSocket:connect,
         websocket:websocket,
         Lists:Lists,
         addListener:addListener,

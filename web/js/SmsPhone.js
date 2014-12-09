@@ -1,5 +1,19 @@
 TEMP['SmsPhone'] = function(air){
 // TODO: 电话接听，挂断和短信挂断服务器交互
+var CountSmsCharacters = function(Words) {
+    var sTotal = 0;
+    var eTotal = 0;
+    for (i = 0; i < Words.length; i++) {
+        var c = Words.charAt(i);
+        if (c.match(/[^\x00-\xff]/)) {
+            sTotal++;
+        } else {
+            eTotal++;
+        }
+    }
+    var should=sTotal==0?"140":"70";
+    return (sTotal+eTotal)+"/"+should;
+}
 //------------------------短信状态
 var addNum=function(num){
     if($("#icon-sms .num").length>0){
@@ -27,10 +41,14 @@ var smsReceiver=function(data){
         $(".window-sms-group-list li[data-number='"+data.sender+"']").addClass("new").click(function(){
             $(this).removeClass("new");
         });
-        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString());
+        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString(),function(){
+            smsTo(data.sender);
+        });
     }else{
         addNum(1);
-        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString());
+        air.require("notify").warningNotify(air.Lang.text_new_sms,data.sender+":"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleString(),function(){
+            smsTo(data.sender);
+        });
     }
     //alert(data.sender+"\n"+data.content+"\n"+new Date(parseInt(data.sendtime)).toLocaleDateString());
 };
@@ -377,18 +395,22 @@ var smsReceiver=function(data){
             fadeHead();
         }
         callingWindow.find(".phone-answer").click(function(){
-            //接听
             timeCounting();destoryShake();
             callingWindow.find(".phone-answer").slideUp();
             // TODO---接听
+            $.get('http://'+air.Options.ip+':'+air.Options.port+'/?mode=device&action=answerPhone');
         });
         callingWindow.find(".phone-reject").click(function(){
-            //挂断
             callingDown(air.Lang.incoming_call_has_been_rejected);
             // TODO---挂断
+            $.get('http://'+air.Options.ip+':'+air.Options.port+'/?mode=device&action=endCall');
         });
         callingWindow.find(".phone-reject-message").click(function(){
             //用短信挂断
+            var num = callingWindow.find(".phone-number").text();
+            smsTo(num);
+            callingDown(air.Lang.incoming_call_has_been_rejected);
+            $.get('http://'+air.Options.ip+':'+air.Options.port+'/?mode=device&action=endCall');
             // TODO---用短信挂断
         });
     };
@@ -437,7 +459,12 @@ var smsReceiver=function(data){
         }));
         DialPanel.find(".dial-panel-input").keyup(function(){
             var text = DialPanel.find(".dial-panel-input").val();
-            DialPanel.find(".dial-panel-input").val(text);
+            var r = $("<ul></ul>");
+            var res = air.require("topbar").contactSearchAry(text);
+            $.each(res,function(i,v){
+                $('<li><b>'+v.name+'</b><span class="num">'+v.num+'</span><span class="fr"><button class="call">拨打</button><button class="sms">发送短信</button></span></li>').appendTo(r);
+            });
+            tar.html(r);
         }).val(num);
         DialPanel.find(".dial-panel-num-buttons div").click(function(){
             var text = DialPanel.find(".dial-panel-input").val()+$(this).text();

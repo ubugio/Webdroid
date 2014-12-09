@@ -6,7 +6,7 @@ import java.util.Vector;
 import com.wantflying.server.WebSocketFrame.CloseCode;
 
 public class UserList_WebSocket {
-	    Vector<User_WebSocket> list;
+	    public static Vector<User_WebSocket> list;
 
 	    public UserList_WebSocket() {
 	        list = new Vector<User_WebSocket>();
