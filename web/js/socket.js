@@ -17,7 +17,11 @@ TEMP['socket'] = function(air){
     connect();
     
     var onOpen = function(evt) { 
-        console.log("Connected to WebSocket server("+wsServer+") Success !"); 
+        console.log("Connected to WebSocket server("+wsServer+") Success !");
+        //初始获取状态信息
+        air.require("dataTran").getJson({mode:"device",action:"status"},function(json){
+            air.require("initAir").statusHandle(json);
+        });
         $(".layout-notify-container").removeClass("refreshing");
         if(heartBeatFaultTimes>0){
             heartBeatFaultTimes=0;

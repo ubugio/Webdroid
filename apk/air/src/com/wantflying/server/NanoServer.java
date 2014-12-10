@@ -116,6 +116,8 @@ public class NanoServer extends NanoHTTPD {
 					}else if(parms.get("action").equals("endCall")){
 						GetPhoneJson.endCall();
 						output = "{\"status\":\"ok\"}";
+					}else if(parms.get("action").equals("uninstall")){
+						output = cmd.uninstallAPK(parms.get("package"));
 					}else if(parms.get("action").equals("status")){
 						output = devie_status();
 					}else if(parms.get("action").equals("contacts")){
@@ -303,11 +305,39 @@ public class NanoServer extends NanoHTTPD {
 								e.printStackTrace();
 							}
 						}
-						Response ret = new Response(HTML_SUCCESS_STRING);
+						Response ret = new Response("{\"status\":\"ok\"}");
+						ret.setMimeType("application/Json");
 						ret.addHeader("Cache-control", "no-cache");
 						ret.addHeader("Access-Control-Allow-Origin", "*");
 						return ret;
 					}
+				}else if(parms.get("action").equals("apkInstall")){
+					for (String s : files.keySet()) {
+						try {
+							FileInputStream fis = new FileInputStream(files.get(s));
+							FileOutputStream fos = new FileOutputStream(getFile("sdcard/air/temp.apk"));
+							byte[] buffer = new byte[1024];
+							while (true) {
+								int byteRead = fis.read(buffer);
+								if (byteRead == -1) {
+									break;
+								}
+								fos.write(buffer, 0, byteRead);
+							}
+							fis.close();
+							fos.close();
+						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e){
+							e.printStackTrace();
+						}
+					}
+					// 这里执行安装
+					cmd.installAPK("sdcard/air/temp.apk");
+					Response ret = new Response(HTML_SUCCESS_STRING);
+					ret.addHeader("Cache-control", "no-cache");
+					ret.addHeader("Access-Control-Allow-Origin", "*");
+					return ret;
 				}
 			}else if(parms.get("mode").equals("stream")){
 				if(parms.get("action").equals("video")){

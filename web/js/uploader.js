@@ -1,12 +1,13 @@
 TEMP['uploader'] = function(air){
     var defaultpath="http://"+air.Options.ip+':'+air.Options.port+"/?mode=upload&action=file&path=";
     
-    var uploadFile = function(f,progressHandlingFunction,successHandler,errorHandler,completeHandler){
-  var formData = new FormData();
-  formData.append('FileData', f);
-    console.log(defaultpath);
+    var uploadFile = function(url,f,progressHandlingFunction,successHandler,errorHandler,completeHandler){
+        var formData = new FormData();
+        formData.append('FileData', f);
+        console.log(defaultpath);
+        var path = url!="default"?url:(defaultpath + air.Options.uploadPath +"/" + encodeURIComponent(f.name));
         $.ajax({
-            url: defaultpath + air.Options.uploadPath +"/" + encodeURIComponent(f.name),  //server script to process data
+            url: path,  //server script to process data
             type: 'POST',
             xhr: function() {
                 myXhr = $.ajaxSettings.xhr();
