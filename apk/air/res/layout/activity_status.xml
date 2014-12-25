@@ -51,4 +51,22 @@
         android:layout_marginTop="65dp"
         android:text="@string/total_status" />
 
+<RelativeLayout
+    android:id="@+id/RelativeLayout_Status"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_below="@+id/connected_users"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="18dp"
+    android:background="@drawable/circle" >
+</RelativeLayout>
+
+<Button
+    android:id="@+id/button1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:text="Button" />
+
 </RelativeLayout>

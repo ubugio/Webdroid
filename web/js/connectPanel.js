@@ -118,7 +118,7 @@ TEMP['connectPanel'] = function(air){
     };
     
     var qrDisconnected = function(){
-        channel.close();
+        if(channel)channel.close();
     };
     return {
         init:init

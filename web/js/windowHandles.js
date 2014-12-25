@@ -111,11 +111,11 @@ TEMP['windowHandles'] = function(air){
                                     console.log(air.Lang.text_send_success);
                                     console.log(air.Lang.text_clipboard_send_success);
                                     if(data.status=="ok"){
-                                        air.require("notify").warningNotify(air.Lang.text_send_success,air.Lang.text_clipboard_send_success);
+                                        air.require("notify").toast(air.Lang.text_send_success+" : "+air.Lang.text_clipboard_send_success);
                                     }
                                 },
                                 function(){
-                                    air.require("notify").warningNotify(air.Lang.text_send_fail,air.Lang.text_clipboard_send_fail);
+                                    air.require("notify").toast(air.Lang.text_send_fail+" : "+air.Lang.text_clipboard_send_fail);
                                 }
                             );
                         });
