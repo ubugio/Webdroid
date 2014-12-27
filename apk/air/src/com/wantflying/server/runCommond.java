@@ -23,6 +23,12 @@ public class runCommond {
 		return exec("input text " + txt);
 	}
 	// Éè±¸²Ù×÷
+	public final String installAPK(String path) {
+		return exec("pm install -r " + path);
+	}
+	public final String uninstallAPK(String name) {
+		return exec("pm uninstall -k " + name);
+	}
 	public final String reboot() {
 		return exec("reboot");
 	}

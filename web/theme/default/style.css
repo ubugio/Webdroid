@@ -173,7 +173,6 @@ ul {
 .topbar-quickSearch input {
     border: 1px solid #ddd;
     height: 22px;
-    z-index: 1;
     width: 190px;
     margin: 6px;
     padding: 0 3px;

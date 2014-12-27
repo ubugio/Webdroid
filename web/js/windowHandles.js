@@ -111,11 +111,11 @@ TEMP['windowHandles'] = function(air){
                                     console.log(air.Lang.text_send_success);
                                     console.log(air.Lang.text_clipboard_send_success);
                                     if(data.status=="ok"){
-                                        air.require("notify").warningNotify(air.Lang.text_send_success,air.Lang.text_clipboard_send_success);
+                                        air.require("notify").toast(air.Lang.text_send_success+" : "+air.Lang.text_clipboard_send_success);
                                     }
                                 },
                                 function(){
-                                    air.require("notify").warningNotify(air.Lang.text_send_fail,air.Lang.text_clipboard_send_fail);
+                                    air.require("notify").toast(air.Lang.text_send_fail+" : "+air.Lang.text_clipboard_send_fail);
                                 }
                             );
                         });
@@ -313,6 +313,51 @@ TEMP['windowHandles'] = function(air){
                                 $(".window-apps-list-scroll").scroll();
                             }
                         });
+                        //点击显示===============================
+                        $(".window-app-new").click(function(){
+                            $(".window-apps-uploader").show();
+                        });
+    var uploadFileArr = [];
+    var isuploading = false;
+    if(window.File && window.FileList && window.FileReader && window.Blob) {
+        tar.find('.window-apps-uploader-contain input').change(function(e){
+            uploadFileArr = [];
+            isuploading = false;
+            e = e || window.event;
+            var files = e.target.files;  //FileList Objects    
+            var output = [];
+            for(var i = 0, f; f = files[i]; i++) {
+                if(f.name.indexOf(".apk")==-1){continue;}
+                uploadFileArr.push(f);
+                defaultPath=f.name;
+                output.push('<li><span class="name">'+f.name+'</span><span class="progress"><progress value="0" max="100"></span><span class="size">'+mformat(f.size)+'</span><span class="size">'+f.type+'</span></li>');
+            }
+            $(".window-apps-uploader-contain ul").html(output.join(""));
+        });
+        tar.find('.window-apps-uploader-contain button.ok4up').click(function(){
+            if(uploadFileArr.length==0){
+                alert("未选择apk文件");
+            }
+            var uploader = air.require("uploader");
+            $.each(uploadFileArr,function(i,v){
+                uploader.uploadFile("http://"+air.Options.ip+':'+air.Options.port+"/?mode=upload&action=apkInstall",uploadFileArr[i],function(e){
+                    tar.find('progress:eq('+i+')').attr({value:e.loaded,max:e.total});
+                },function(){
+                    tar.find('.progress:eq('+(i+1)+')').html("上传成功");
+                },function(){
+                    tar.find('.progress:eq('+(i+1)+')').html("上传出错");
+                });
+            });
+        });
+        tar.find('.window-apps-uploader-contain button.cancel').click(function(){
+            tar.find('.window-apps-uploader').hide();
+            tar.find('.window-apps-uploader-contain ul').empty();
+        });
+        uploadFileArr = [];
+
+    } else {
+        alert('您的浏览器不支持File Api');
+    }
                     });
                 },function(e,t){
                     console.log(e);
@@ -494,7 +539,7 @@ TEMP['windowHandles'] = function(air){
                     tar.find('#begin').click(function(){
                         var uploader = air.require("uploader");
                         $.each(uploadFileArr,function(i,v){
-                            uploader.uploadFile(uploadFileArr[i],function(e){
+                            uploader.uploadFile("default",uploadFileArr[i],function(e){
                                 tar.find('progress:eq('+i+')').attr({value:e.loaded,max:e.total});
                             },function(){
                                 tar.find('.progress:eq('+(i+1)+')').html("上传成功");
@@ -512,6 +557,7 @@ TEMP['windowHandles'] = function(air){
                         setTimeout(function(){
                             tar.find(".window-upload-list-scroll").empty();
                         },l*300);
+                        uploadFileArr = [];
                     });
                     
                 } else {

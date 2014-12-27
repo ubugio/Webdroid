@@ -8,7 +8,6 @@ import android.net.Uri;
 import com.wantflying.server.NanoServer;
 
 public class GetPhoneJson {
-	public PhoneReceiver phoneRcvr;
 	public Context mcontext;
 	public GetPhoneJson(Context pcontext){
 		mcontext = pcontext;
@@ -21,15 +20,15 @@ public class GetPhoneJson {
 	    mcontext.registerReceiver(smsRcvr, batteryLevelFilter);
 	}
 	private void registerPhoneReceiver(Context mcontext){
-		phoneRcvr = new PhoneReceiver();
+		PhoneReceiver phoneRcvr = new PhoneReceiver();
 	    IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_CALL);
 	    mcontext.registerReceiver(phoneRcvr,batteryLevelFilter);
 	}
 	public String callNum(String num){
 		if(num.trim().length()!=0){ 
-         Intent phoneIntent = new Intent("android.intent.action.CALL",Uri.parse("tel:" + num));
-         phoneIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-         mcontext.startActivity(phoneIntent);
+        	Intent phoneIntent = new Intent("android.intent.action.CALL",Uri.parse("tel:" + num));
+        	phoneIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        	mcontext.startActivity(phoneIntent);
         }
 		return "{\"status\":\"ok\"}";
 	}

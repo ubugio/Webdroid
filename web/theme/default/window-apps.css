@@ -1,6 +1,12 @@
 .window-apps-title {
 border-bottom: 1px solid #ddd;
 }
+.window-app-new {
+float: right;
+margin: 3px;
+background: #A3CEFF;
+padding: 2px;
+}
 .window-apps-list,.window-apps-group {
 height: 452px;
 display:inline-block;
@@ -130,4 +136,30 @@ font-weight:normal;
 .window-apps-list-scroll{
 height: 430px;
 overflow: auto;
+}
+.window-apps-uploader {
+    position: absolute;
+    display: none;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(58, 58, 58, 0.43);
+}
+.window-apps-uploader-contain {
+    width: 400px;
+    margin: 10% auto;
+    background: #fff;
+    padding: 10px;
+    border: 4px solid #3ABFD7;
+}
+.window-apps-uploader-contain p {
+    margin: -10px -10px 11px -10px;
+    background: #3ABFD7;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+}
+.window-apps-uploader-contain ul {
+margin: 15px 0;
 }

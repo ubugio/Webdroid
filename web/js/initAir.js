@@ -154,6 +154,7 @@ TEMP['initAir'] = function(air){
         getBaseData:getBaseData,
         rander:PublicRander,
         setStyle:PublicSetStyle,
+        statusHandle:statusHandle,
         reConnectSocket:reConnectSocket,
         tryConnectSocket:tryConnectSocket
     };
