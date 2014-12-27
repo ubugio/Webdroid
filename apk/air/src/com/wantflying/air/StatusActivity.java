@@ -1,52 +1,70 @@
 package com.wantflying.air;
 
+import java.util.ArrayList;
+
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.widget.RelativeLayout;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wantflying.Ripple.RippleBackground;
+import com.wantflying.server.NanoWebSocketServer;
 import com.wantflying.server.UserList_WebSocket;
 
-public class StatusActivity extends Activity implements OnClickListener, AnimationListener {
+public class StatusActivity extends Activity {
 
-	private RelativeLayout RelativeLayout;
-	private int s = 1;
-	private ScaleAnimation scaleAnim1;
-	private ScaleAnimation scaleAnim2;
+    private static TextView cus;
+    private static ArrayList<ImageView> imageViews;
+    private static ArrayList<TextView> textViews;
+    private static int devicesNum = 0;
+    private static int on = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_status);
+		on = 1;
+		UserList_WebSocket.statusFlag=1;
 		Intent intent = this.getIntent();
 		if(intent.hasExtra("app")){
-			Bundle bundle = intent.getExtras();
-			String app_t = bundle.getString("app");
-			String browser_t = bundle.getString("browser");
-			String type_t = bundle.getString("type");
-			TextView app = (TextView) findViewById(R.id.app_status);
-			TextView total = (TextView) findViewById(R.id.total_status);
-			TextView browser = (TextView) findViewById(R.id.browser_status);
-			total.setText(type_t);
-			browser.setText(browser_t);
-			app.setText(app_t);
 		}
-		TextView cus = (TextView) findViewById(R.id.connected_users);
-		cus.setText("已经有-"+UserList_WebSocket.list.size()+"-个客户端建立在这个手机上");
+		cus = (TextView) findViewById(R.id.connected_users);
+		devicesNum = NanoWebSocketServer.userList.userCount();
+		cus.setText("已经有-"+devicesNum+"-个客户端建立在这个手机上");
 		
 		TextView urlText = (TextView) findViewById(R.id.link_status);
 		urlText.setText("Server IP://" + OpenNanoServerActivity.ip + "/\n\nhttp port : " + OpenNanoServerActivity.port + "\nWebSocket port : " + OpenNanoServerActivity.socketport);
-
-		findViewById(R.id.button1).setOnClickListener(this);
-		RelativeLayout = (RelativeLayout) findViewById(R.id.RelativeLayout_Status);
+//======
+        final RippleBackground rippleBackground=(RippleBackground)findViewById(R.id.content);
+        imageViews=new ArrayList<ImageView>();
+        textViews=new ArrayList<TextView>();
+        imageViews.add((ImageView)findViewById(R.id.foundDevice1));
+        imageViews.add((ImageView)findViewById(R.id.foundDevice2));
+        imageViews.add((ImageView)findViewById(R.id.foundDevice3));
+        imageViews.add((ImageView)findViewById(R.id.foundDevice4));
+        imageViews.add((ImageView)findViewById(R.id.foundDevice5));
+        textViews.add((TextView)findViewById(R.id.textView1));
+        textViews.add((TextView)findViewById(R.id.textView2));
+        textViews.add((TextView)findViewById(R.id.textView3));
+        textViews.add((TextView)findViewById(R.id.textView4));
+        textViews.add((TextView)findViewById(R.id.textView5));
+        rippleBackground.startRippleAnimation();
+        final Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                foundDevice(devicesNum);
+            }
+        },3000);
 	}
 
 	@Override
@@ -55,75 +73,93 @@ public class StatusActivity extends Activity implements OnClickListener, Animati
 		getMenuInflater().inflate(R.menu.status, menu);
 		return true;
 	}
+	@Override
+	public void onBackPressed() {
+		UserList_WebSocket.statusFlag=0;
+		on=0;
+		super.onBackPressed();
+	}
+
+	@Override
+	protected void onDestroy() {
+		UserList_WebSocket.statusFlag=0;
+		on=0;
+		super.onDestroy();
+	}
 	//=====================================
+    public static Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+    		devicesNum = NanoWebSocketServer.userList.userCount();
+    		cus.setText("已经有-"+devicesNum+"-个客户端建立在这个手机上");
+        	if(msg.what==1){
+    			if(on==1){
+    				newDevice(devicesNum-1);
+    			}
+        	}
+        	if(msg.what==0){
+    			if(on==1)
+    				deleteDevice(devicesNum);
+        	}
+            super.handleMessage(msg);
+        }
+    };
 
-
-	public void onClick(View v) {
-		//startScaleAnimationJavaCode();
-		startScaleAnimationXml();
-		setlistener();
-	}
-
-	private void startScaleAnimationXml() {
-//		android:fromXScale="1.0"			动画的开始大小
-//			    android:toXScale="0.5"		动画的结束大小
-//			    android:fromYScale="1.0"
-//			    android:toYScale="0.5"
-//			    android:pivotX="50%p"		动画放大或者缩小后的位置
-//			    android:pivotY="50%p"
-		scaleAnim1 = (ScaleAnimation) AnimationUtils.loadAnimation(this, R.anim.scale1);
-		RelativeLayout.startAnimation(scaleAnim1);
-		scaleAnim2 = (ScaleAnimation) AnimationUtils.loadAnimation(this, R.anim.scale2);
-	}
-
-	private void setlistener() {
-		scaleAnim1.setAnimationListener(this);
-		scaleAnim2.setAnimationListener(this);
-	}
-
-	private void startScaleAnimationJavaCode() {
-		//Animation.RELATIVE_TO_SELF  动画相对于自身移动
-		ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 0.5f, 1.0f, 0.5f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
-		scaleAnim.setDuration(2000);
-		scaleAnim.setFillAfter(true);
-		RelativeLayout.startAnimation(scaleAnim);
-
-	}
-
-	private void startScaleAnimationJavaCodes() {
-
-		ScaleAnimation scaleAnims = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
-		scaleAnims.setDuration(2000);
-		// scaleAnims.setStartOffset(2000);
-		RelativeLayout.startAnimation(scaleAnims);
-	}
-
-	public void onAnimationStart(Animation animation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onAnimationEnd(Animation animation) {
-		if(s == 1){
-			RelativeLayout.startAnimation(scaleAnim2);
-			s = 2;
-		}
-		else if(s == 2){
-			RelativeLayout.startAnimation(scaleAnim1);
-			s = 1;
-		}
-		else{
-			System.out.println("ScaleAnimationDemoActivity ++ 大姐来了");
-		}
-	}
-
-	public void onAnimationRepeat(Animation animation) {
-		// TODO Auto-generated method stub
-		
-	}
-
+    private static void foundDevice(int devicesNum2){
+    	devicesNum2=devicesNum2>5?5:devicesNum2;
+    	for(int i=0;i<devicesNum2;i++){
+    		newDevice(i);
+    	}
+    }
+    private static void newDevice(int i){
+		textViews.get(i).setText(UserList_WebSocket.list.get(i).ip);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(400);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        ArrayList<Animator> animatorList=new ArrayList<Animator>();
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleX", 0f, 1.2f, 1f);
+        animatorList.add(scaleXAnimator);
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleY", 0f, 1.2f, 1f);
+        animatorList.add(scaleYAnimator);
+        animatorSet.playTogether(animatorList);
+        imageViews.get(i).setVisibility(View.VISIBLE);
+        animatorSet.start();
+    }
+    public static void shakeClient2Server(String ip){
+    	for(int i = 0;i < textViews.size(); i ++){
+    		if(textViews.get(i).getText()==ip){
+    	        AnimatorSet animatorSet = new AnimatorSet();
+    	        animatorSet.setDuration(400);
+    	        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+    	        ArrayList<Animator> animatorList=new ArrayList<Animator>();
+    	        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleX", 1f, 1.2f, 1f);
+    	        animatorList.add(scaleXAnimator);
+    	        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleY", 1f, 1.2f, 1f);
+    	        animatorList.add(scaleYAnimator);
+    	        animatorSet.playTogether(animatorList);
+    	        animatorSet.start();
+    		}
+        }
+    }
+    
+    private static void deleteDevice(final int i){
+		textViews.get(i).setText("");
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.setDuration(400);
+        animatorSet.setInterpolator(new AccelerateDecelerateInterpolator());
+        ArrayList<Animator> animatorList=new ArrayList<Animator>();
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleX", 1f, 1.2f, 0f);
+        animatorList.add(scaleXAnimator);
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(imageViews.get(i), "ScaleY", 1f, 1.2f, 0f);
+        animatorList.add(scaleYAnimator);
+        animatorSet.playTogether(animatorList);
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imageViews.get(i).setVisibility(View.INVISIBLE);
+            }
+        },400);
+        animatorSet.start();
+    }
 }

@@ -12,6 +12,7 @@ class MyWebSocket extends WebSocket {
         super(handshake);
         user = new User_WebSocket();
         user.webSocket = this;
+        user.ip = this.handshakeRequest.getHeaders().get("remote-addr");
         this.httpSession = handshakeRequest;
         NanoWebSocketServer.userList.addUser(user);
     }

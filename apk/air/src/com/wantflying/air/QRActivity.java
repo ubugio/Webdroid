@@ -170,7 +170,9 @@ public class QRActivity extends Activity implements Callback {
 	//appQr2browser
 	@SuppressLint("SimpleDateFormat")
 	public void sendIp2Server(String id,String ip,String port,String socketport) throws IOException{
-		StringBuilder buf = new StringBuilder("http://droid4web.sinaapp.com/api/appQr2browser.php");  
+		StringBuilder buf = new StringBuilder("http://droid4web.sinaapp.com/api/appQr2browser.php"); 
+		//android.wantflying.com/api/scaner.php?id=Air-alpha-asoasas
+		id = id.substring(id.indexOf("?id=")+4,id.length());
         buf.append("?");
         buf.append("islan=1&");
         buf.append("id="+URLEncoder.encode(id,"UTF-8")+"&");

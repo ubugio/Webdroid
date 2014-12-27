@@ -81,7 +81,7 @@ TEMP['connectPanel'] = function(air){
                 if(json.status=="ok"){
                     key = json.key;
                     url = json.url;
-                    loginPanel.find(".input-img img").attr("src","http://qr.liantu.com/api.php?text="+json.key);
+                    loginPanel.find(".input-img img").attr("src","http://qr.liantu.com/api.php?text=http://android.wantflying.com/api/scaner.php?id="+json.key);
                     $.getScript("libs/channel_api.js",function(){//"http://channel.sinaapp.com/api.js
                         channel = new sae.Channel(url);
                         channel.onopen = function (){
